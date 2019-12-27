@@ -1,0 +1,25 @@
+button {
+	padding: 2px;
+}
+
+#instructions {
+	padding: 20px;
+	border: 1px solid grey;
+}
+
+#instructions, #hideInstructions {
+	display: none;
+}
+
+#showInstructions, #hideInstructions {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+fieldset {
+	width: 200px;
+}
+
+#fieldsetcolor {
+	width: 100%;
+}
