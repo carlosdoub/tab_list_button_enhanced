@@ -7,15 +7,34 @@
   </head>
 
 <body>
-	<fieldset>
+  <fieldset>
+		<legend>  Display options:  </legend>  
+    <table>
+      <tr>
+        <td><input type="checkbox" id="double-line" /></td>
+        <td>Show entries in double line with Title and URL</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" id="tabindex" /></td>
+        <td>Show tab index</td>
+      </tr>
+    </table>          
+    <hr />
+    <table>
+      <tr>
+        <td>Left border color of active item:  </td>
+        <td><input type="color" id="bordercolor" /> </tr>
+      </tr>
+    </table> 
+  </fieldset>
+<p />
+  <fieldset>
 		<legend>  Show buttons:  </legend>
 		<input type="checkbox" id="viewurl" /> View URL <img src="img/s_info.png" /> <br />
 		<input type="checkbox" id="bookmark" /> Bookmark <img src="img/b_bookmark.png" /> <br />
 		<input type="checkbox" id="pin" /> Pin <img src="img/favicon-16x16.png" /> <br />
 		<input type="checkbox" id="reload" /> Reload <img src="img/s_reload.png" />  <br />
 		<input type="checkbox" id="remove" /> Remove <img src="img/b_drop.png" /> <br />
-		<hr />
-		<span><input type="checkbox" id="tabindex" /> Show tab index </span> 
 	</fieldset>
   <p />
   <fieldset>

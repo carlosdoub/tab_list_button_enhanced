@@ -6,6 +6,8 @@ var active = {};
 var infoUrl = {};
 var pinned = {};
 var tempId = null;
+var heightLines = 20;
+var scrollBy = 2;
 
 // From https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/
 /**
@@ -37,10 +39,9 @@ var windowHeight;
 
 
 async function loadOptions() {
-	let {buttons, scrollbar} = await browser.storage.local.get(["buttons", "scrollbar"]);
+	let {buttons, scrollbar, display} = await browser.storage.local.get(["buttons", "scrollbar", "display"]);
 	if (typeof buttons === 'undefined') {
 		let buttons = {
-			tabindex: false,
 			pin: false,
 			bookmark: false,
 			viewurl: true,
@@ -56,9 +57,15 @@ async function loadOptions() {
 		}
 		await browser.storage.local.set({scrollbar});
 		loadOptions();
-	} else {
-		
-	}
+	} else if (typeof display === 'undefined') {
+		let display = {
+			tabindex: false,
+			double_line: false,
+			bordercolor: "#FF0000"
+		}
+		await browser.storage.local.set({display});
+		loadOptions();
+	} else {}
 }
 
 var misc = {
@@ -195,7 +202,7 @@ var context_menu = {
 	getId: function(id) {
 		let num = id.split("_")[1];
 		let item = id.split("_")[0];
-		if (item == "icon" || item == "span")
+		if (item == "icon" || item == "span" || item == "url")
 			return num;
 		else
 			return false;
@@ -362,23 +369,24 @@ var keyboard = {
 	 * to keep the view in the selected element 
 	 *
 	 * */
-	menuLinesStartScroll: function() {
-		// height of 600 is 20 lines
+	menuLinesStartScroll: function() {		
+		// the panel with max height of 600px  
+		// is 20 lines in one line display
+		// and 12 lines with double line
 		// 0.8 ratio to start scrolling
-		var lines = (window.innerHeight * 20 / 600) * 0.8;
-		return lines;
+		return Math.floor(heightLines * 0.8);		
 	},
 
 	scrollMenuUp: function() {
 		// checks when to start scrolling
 		if (indexes[new_node.id] < Object.keys(indexes).length - this.menuLinesStartScroll())
-			window.scrollByLines(-2);
+			window.scrollByLines(-scrollBy);
 	},
 
 	scrollMenuDown: function() {
 		// checks when to start scrolling
 		if (indexes[new_node.id] > this.menuLinesStartScroll())
-			window.scrollByLines(2);
+			window.scrollByLines(scrollBy);
 	},
 
 	scrollMenuBegin: function() {
@@ -395,16 +403,16 @@ var keyboard = {
 
 	upKey: function() {
 		new_node = old_node.previousSibling;
-		if (this.checkNewNode()) {
-			misc.nodeToggle();	
+		if (this.checkNewNode()) {			
+			misc.nodeToggle();				
 			this.scrollMenuUp();
 		}
 	},
 
 	downKey: function() {
-		new_node = old_node.nextSibling;
-		if (this.checkNewNode()) {
-			misc.nodeToggle();	
+		new_node = old_node.nextSibling;		
+		if (this.checkNewNode()) {			
+			misc.nodeToggle();			
 			this.scrollMenuDown();
 		}
 	},
@@ -454,7 +462,7 @@ var keyboard = {
 
 		browser.tabs.reload(parseInt(id), {bypassCache: true})
 		.then(() => { 
-			icon.src = browser.runtime.getURL("popup/img/ajax_clock_small.gif");
+			icon.src = browser.runtime.getURL("popup/img/loading.svg");
 		});
 
 		misc.checkLoadingTab(id)
@@ -603,7 +611,7 @@ var mouse = {
 
 		browser.tabs.reload(id, {bypassCache: true})
 		.then(() => { 
-			icon.src = browser.runtime.getURL("popup/img/ajax_clock_small.gif");
+			icon.src = browser.runtime.getURL("popup/img/loading.svg");
 		});
 
 		misc.checkLoadingTab(id)
@@ -688,11 +696,15 @@ var session = {
 	
 	load_session: async function() {
 		try {
-			let {buttons, scrollbar} = await browser.storage.local.get(["buttons", "scrollbar"]);
+			let {buttons, scrollbar, display} = 
+				await browser.storage.local.get(["buttons", "scrollbar", "display"]);
 			
-			if (scrollbar["mouse"]) {
+			// load some options for keyboard scrolling
+			heightLines = display["double_line"]? 12:20;
+			scrollBy = display["double_line"]? 3:2;
+
+			if (scrollbar["mouse"])
 				mouse.showScrollBar();
-			}
 
 			let query = {
 				currentWindow: true
@@ -715,7 +727,7 @@ var session = {
 					div.classList.add('active');
 				}
 
-				if (buttons["tabindex"]) {
+				if (display["tabindex"]) {
 					let index = document.createElement('span');
 					let num = tab.index + 1;
 					index.innerText = session.getIndexNumber(tabs.length.toString(), num.toString());
@@ -726,7 +738,7 @@ var session = {
 				let img = document.createElement('img');
 				img.setAttribute('id', "icon_"+tab.id);
 				if (tab.status == "loading") {
-					img.src = browser.runtime.getURL("popup/img/ajax_clock_small.gif");
+					img.src = browser.runtime.getURL("popup/img/loading.svg");
 
 					misc.checkLoadingTab(tab.id)
 					.then((tabInfo) => {
@@ -742,8 +754,8 @@ var session = {
 				else {
 					img.setAttribute('src', tab.favIconUrl);
 				}
-				img.setAttribute('width', '16');
-				img.setAttribute('height', '16');
+				img.setAttribute('width', display["double_line"]?'32':'16');
+				img.setAttribute('height', display["double_line"]?'32':'16');
 				img.setAttribute('title', tab.title);
 				img.classList.add('favicon');
 				img.addEventListener('click', function() {
@@ -751,15 +763,37 @@ var session = {
 				});
 				div.append(img);
 
-				let span = document.createElement('span');
-				span.setAttribute('id', "span_"+tab.id);
-				span.innerText = tab.title;
-				span.setAttribute('title', tab.title);
-				span.classList.add('item');
-				span.addEventListener('click', function() {
-					mouse.setItemClick(tab);
-				});
-				div.appendChild(span);
+				if (display["double_line"]) {
+					let span = document.createElement('div');
+					span.setAttribute('id', "span_"+tab.id);
+					span.innerText = tab.title;
+					span.setAttribute('title', tab.title);					
+	
+					let url = document.createElement('div');
+					url.setAttribute('id', "url_"+tab.id);
+					url.innerText = tab.url;
+					url.setAttribute('title', tab.url);
+					url.classList.add('index');
+	
+					let item = document.createElement('div');					
+					item.appendChild(span);					
+					item.appendChild(url);
+					item.classList.add('item');
+					item.addEventListener('click', function() {
+						mouse.setItemClick(tab);
+					});
+					div.appendChild(item);
+				} else {
+					let span = document.createElement('span');
+					span.setAttribute('id', "span_"+tab.id);
+					span.innerText = tab.title;
+					span.setAttribute('title', tab.title);
+					span.classList.add('item');
+					span.addEventListener('click', function() {
+						mouse.setItemClick(tab);
+					});
+					div.appendChild(span);
+				}
 
 				if (buttons["remove"]) {
 					let remove = document.createElement('img');
@@ -838,6 +872,15 @@ var session = {
 
 				tabsMenu.appendChild(div);
 			}
+			
+			// some display option			
+			document.querySelector(".active").style.borderLeftColor = display["bordercolor"];	
+
+			document.addEventListener('keydown', keyboard.keyboard_navigation);
+			document.addEventListener('mouseover', mouse.showScrollBar);
+			document.addEventListener('click', function(e) {context_menu.clickEvent(e);});
+			document.addEventListener('contextmenu', function(e) {context_menu.right_click_menu(e);});
+
 		} catch (error) {
 			console.log(`Error: ${error}`);
 		}
@@ -845,9 +888,5 @@ var session = {
 }
 
 document.addEventListener('DOMContentLoaded', session.load_session);
-document.addEventListener('keydown', keyboard.keyboard_navigation);
-document.addEventListener('mouseover', mouse.showScrollBar);
-document.addEventListener('click', function(e) {context_menu.clickEvent(e);});
-document.addEventListener('contextmenu', function(e) {context_menu.right_click_menu(e);});
 
 loadOptions();

@@ -48,9 +48,17 @@ function hideInstructions() {
 	document.querySelector("#hideInstructions").style.display = "none";
 }
 
-async function setButtonOption() {
-	let buttons = {
+async function setDisplayOption() {
+	let display = {
 		tabindex: document.querySelector('#tabindex').checked,
+		double_line: document.querySelector('#double-line').checked,
+		bordercolor: document.querySelector('#bordercolor').value
+	};
+	await browser.storage.local.set({display});
+}
+
+async function setButtonOption() {
+	let buttons = {		
 		pin: document.querySelector('#pin').checked,
 		bookmark: document.querySelector('#bookmark').checked,
 		viewurl: document.querySelector('#viewurl').checked,
@@ -105,11 +113,28 @@ async function setScrollbarOption() {
 	await browser.storage.local.set({scrollbar});
 }
 
-async function populateOptions() {
+async function populateDisplay() {
+	let {display} = await browser.storage.local.get("display");
+
+	if (typeof display === 'undefined') {
+		let display = {
+			tabindex: false,
+			double_line: false,
+			bordercolor: "#FF0000"
+		}
+		await browser.storage.local.set({display});
+		populateDisplay();
+	} else {		
+		document.querySelector('#tabindex').checked = display["tabindex"];
+		document.querySelector('#double-line').checked = display["double_line"];		
+		document.querySelector('#bordercolor').value = display["bordercolor"];		
+	}
+}
+
+async function populateButtons() {
 	let {buttons} = await browser.storage.local.get("buttons");
 	if (typeof buttons === 'undefined') {
-		let buttons = {
-			tabindex: false,
+		let buttons = {			
 			pin: false,
 			bookmark: false,
 			viewurl: true,
@@ -123,10 +148,8 @@ async function populateOptions() {
 		document.querySelector('#viewurl').checked = buttons["viewurl"];
 		document.querySelector('#pin').checked = buttons["pin"];
 		document.querySelector('#reload').checked = buttons["reload"];
-		document.querySelector('#remove').checked = buttons["remove"];
-		document.querySelector('#tabindex').checked = buttons["tabindex"];
+		document.querySelector('#remove').checked = buttons["remove"];		
 	}
-
 }
 
 async function populateColors() {
@@ -184,6 +207,7 @@ async function populateScrollbar() {
 	}
 }
 
+
 /**
  * Update the UI when the page loads.
  */
@@ -199,6 +223,13 @@ document.querySelector('#showInstructions').addEventListener('click', showInstru
 document.querySelector('#hideInstructions').addEventListener('click', hideInstructions)
 
 /**
+ * Display options
+ * */
+document.querySelector('#tabindex').addEventListener('change', setDisplayOption)
+document.querySelector('#double-line').addEventListener('change', setDisplayOption)
+document.querySelector('#bordercolor').addEventListener('change', setDisplayOption)
+
+/**
  * Buttons options
  * */
 document.querySelector('#bookmark').addEventListener('change', setButtonOption)
@@ -206,7 +237,6 @@ document.querySelector('#pin').addEventListener('change', setButtonOption)
 document.querySelector('#viewurl').addEventListener('change', setButtonOption)
 document.querySelector('#reload').addEventListener('change', setButtonOption)
 document.querySelector('#remove').addEventListener('change', setButtonOption)
-document.querySelector('#tabindex').addEventListener('change', setButtonOption)
 
 /**
  * Colors options
@@ -231,7 +261,9 @@ document.querySelector('#bgcolor').addEventListener('change', setBadgeOption)
 document.querySelector('#mouse').addEventListener('change', setScrollbarOption)
 document.querySelector('#keyboard').addEventListener('change', setScrollbarOption)
 
-populateOptions();
+
+populateDisplay();
+populateButtons();
 populateColors();
 populateBadge();
 populateScrollbar();

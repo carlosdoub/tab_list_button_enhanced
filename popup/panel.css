@@ -1,13 +1,15 @@
 html, body {
     min-width: 250px;
+    
 }
 
 body {
     overflow-y:hidden; 
+    max-height: 599px; /* To allow automatic shrink of the size when removing items (600px is the max and when it reaches it does not shrink automatically) */        
 }
 
 .group {
-    padding:5px;
+    padding: 4px;
 }
 
 *,
@@ -58,7 +60,7 @@ img.favicon {
 .active {
 	font-weight: bold;
 	border-left: 3px solid red; /* 1px from button/hover border and 2px from button/hover left and right margin */
-	margin-left: 0px;
+  margin-left: 0px;  
 }
 
 .hover {
@@ -86,6 +88,12 @@ span.index {
   padding: 4px;  
   box-sizing: content-box;
   vertical-align: middle;
+}
+
+div.index {
+  color:grey;
+  font-size: 9px;
+  padding: 4px 0 4px 0; 
 }
 
 input {
