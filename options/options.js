@@ -119,7 +119,7 @@ async function populateDisplay() {
 	if (typeof display === 'undefined') {
 		let display = {
 			tabindex: false,
-			double_line: false,
+			double_line: true,
 			bordercolor: "#FF0000"
 		}
 		await browser.storage.local.set({display});
@@ -137,7 +137,7 @@ async function populateButtons() {
 		let buttons = {			
 			pin: false,
 			bookmark: false,
-			viewurl: true,
+			viewurl: false,
 			reload: true,
 			remove: true
 		}

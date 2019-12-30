@@ -30,7 +30,7 @@
         "storage",
 		    "bookmarks"
     ],
-    "version": "2.5.4",
+    "version": "2.6.0",
 
 	"background": {"scripts": ["background.js"]},
 

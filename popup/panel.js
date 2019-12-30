@@ -6,8 +6,8 @@ var active = {};
 var infoUrl = {};
 var pinned = {};
 var tempId = null;
-var heightLines = 20;
-var scrollBy = 2;
+var heightLines = 12;
+var scrollBy = 3;
 
 // From https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/
 /**
@@ -44,7 +44,7 @@ async function loadOptions() {
 		let buttons = {
 			pin: false,
 			bookmark: false,
-			viewurl: true,
+			viewurl: false,
 			reload: true,
 			remove: true
 		}
@@ -60,7 +60,7 @@ async function loadOptions() {
 	} else if (typeof display === 'undefined') {
 		let display = {
 			tabindex: false,
-			double_line: false,
+			double_line: true,
 			bordercolor: "#FF0000"
 		}
 		await browser.storage.local.set({display});
