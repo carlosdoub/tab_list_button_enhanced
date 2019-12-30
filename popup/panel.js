@@ -44,7 +44,7 @@ async function loadOptions() {
 		let buttons = {
 			pin: false,
 			bookmark: false,
-			viewurl: false,
+			viewurl: true,
 			reload: true,
 			remove: true
 		}
@@ -60,7 +60,7 @@ async function loadOptions() {
 	} else if (typeof display === 'undefined') {
 		let display = {
 			tabindex: false,
-			double_line: true,
+			double_line: false,
 			bordercolor: "#FF0000"
 		}
 		await browser.storage.local.set({display});
