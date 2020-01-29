@@ -679,7 +679,6 @@ var session = {
 		pinned[tab.id] = tab.pinned;
 	},
 
-
 	setFirstElement: function(div) {
 		if (this.first) {
 			old_node = div;
@@ -694,6 +693,19 @@ var session = {
 		return zero + index.toString();
 	},
 	
+	testLoadedTab: function(tab, div) {
+		div.classList.add("disabled");
+		const executing = browser.tabs.executeScript(tab.id,
+			{code: `;`}
+		);
+		executing.then(() => {               
+		});
+		executing.catch(() => {
+			if (tab.url != "about:blank")                 
+				div.classList.add("enabled");                    
+		});
+	},
+
 	load_session: async function() {
 		try {
 			let {buttons, scrollbar, display} = 
@@ -864,7 +876,8 @@ var session = {
 					});
 					div.append(info);
 				}
-
+				
+				session.testLoadedTab(tab, div);
 				session.setFirstElement(div);
 
 				div.addEventListener('mouseenter', mouse.mouse_navigation_enter);

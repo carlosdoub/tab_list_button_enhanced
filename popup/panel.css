@@ -35,6 +35,9 @@ img.favicon {
 .disabled {
     color:#999;
 }
+.enabled {
+  color:#000;
+}
 
 .item {
     padding: 4px;
