@@ -33,7 +33,7 @@ img.favicon {
 }
 
 .disabled {
-    color:#999;
+    color:grey;
 }
 .enabled {
   color:#000;

@@ -52,6 +52,7 @@ async function setDisplayOption() {
 	let display = {
 		tabindex: document.querySelector('#tabindex').checked,
 		double_line: document.querySelector('#double-line').checked,
+		unloaded: document.querySelector('#unloaded').checked,
 		bordercolor: document.querySelector('#bordercolor').value
 	};
 	await browser.storage.local.set({display});
@@ -120,6 +121,7 @@ async function populateDisplay() {
 		let display = {
 			tabindex: false,
 			double_line: false,
+			unloaded: false,
 			bordercolor: "#FF0000"
 		}
 		await browser.storage.local.set({display});
@@ -127,6 +129,7 @@ async function populateDisplay() {
 	} else {		
 		document.querySelector('#tabindex').checked = display["tabindex"];
 		document.querySelector('#double-line').checked = display["double_line"];		
+		document.querySelector('#unloaded').checked = display["unloaded"];		
 		document.querySelector('#bordercolor').value = display["bordercolor"];		
 	}
 }
@@ -228,6 +231,7 @@ document.querySelector('#hideInstructions').addEventListener('click', hideInstru
 document.querySelector('#tabindex').addEventListener('change', setDisplayOption)
 document.querySelector('#double-line').addEventListener('change', setDisplayOption)
 document.querySelector('#bordercolor').addEventListener('change', setDisplayOption)
+document.querySelector('#unloaded').addEventListener('change', setDisplayOption)
 
 /**
  * Buttons options

@@ -61,6 +61,7 @@ async function loadOptions() {
 		let display = {
 			tabindex: false,
 			double_line: false,
+			unloaded: false,
 			bordercolor: "#FF0000"
 		}
 		await browser.storage.local.set({display});
@@ -877,7 +878,9 @@ var session = {
 					div.append(info);
 				}
 				
-				session.testLoadedTab(tab, div);
+				if (display["unloaded"])
+					session.testLoadedTab(tab, div);
+				
 				session.setFirstElement(div);
 
 				div.addEventListener('mouseenter', mouse.mouse_navigation_enter);
