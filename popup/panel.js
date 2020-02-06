@@ -672,8 +672,7 @@ var mouse = {
 var session = {
 
 	first: null,
-	activeTab: null,
-	containerColor: null,
+	activeTab: null,	
 
 	setIndexes: function(tab) {
 		indexes[tab.id] = tab.index;
