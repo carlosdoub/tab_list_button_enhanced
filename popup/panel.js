@@ -38,26 +38,10 @@ var windowWidth;
 var windowHeight;
 
 
-async function loadOptions() {
-	let {buttons, scrollbar, display} = await browser.storage.local.get(["buttons", "scrollbar", "display"]);
-	if (typeof buttons === 'undefined') {
-		let buttons = {
-			pin: false,
-			bookmark: false,
-			viewurl: true,
-			reload: true,
-			remove: true
-		}
-		await browser.storage.local.set({buttons});
-		loadOptions();
-	} else if (typeof scrollbar === 'undefined') {
-		let scrollbar = {
-			mouse: false,
-			keyboard: true
-		}
-		await browser.storage.local.set({scrollbar});
-		loadOptions();
-	} else if (typeof display === 'undefined') {
+async function loadDisplayOptions() {
+	let {display} = await browser.storage.local.get("display");
+
+	if (typeof display === 'undefined') {
 		let display = {
 			tabindex: false,
 			double_line: false,
@@ -66,9 +50,40 @@ async function loadOptions() {
 			containercolor: false
 		}
 		await browser.storage.local.set({display});
-		loadOptions();
-	} else {}
+		loadDisplayOptions();
+	} else {					
+	}
 }
+
+async function loadButtonsOptions() {
+	let {buttons} = await browser.storage.local.get("buttons");
+	if (typeof buttons === 'undefined') {
+		let buttons = {			
+			pin: false,
+			bookmark: false,
+			viewurl: true,
+			reload: true,
+			remove: true
+		}
+		await browser.storage.local.set({buttons});
+		loadButtonsOptions();
+	} else {					
+	}
+}
+
+async function loadScrollbarOptions() {
+	let {scrollbar} = await browser.storage.local.get("scrollbar");
+	if (typeof scrollbar === 'undefined') {
+		let scrollbar = {
+			mouse: false,
+			keyboard: true
+		};
+		await browser.storage.local.set({scrollbar});
+		loadScrollbarOptions();
+	} else {		
+	}
+}
+
 
 var misc = {
 	updateIndexes: async function() {
@@ -924,4 +939,6 @@ var session = {
 
 document.addEventListener('DOMContentLoaded', session.load_session);
 
-loadOptions();
+loadDisplayOptions();
+loadButtonsOptions();
+loadScrollbarOptions();
