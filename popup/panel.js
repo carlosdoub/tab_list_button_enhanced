@@ -671,6 +671,8 @@ var mouse = {
 var session = {
 
 	first: null,
+	activeTab: null,
+	containerColor: null,
 
 	setIndexes: function(tab) {
 		indexes[tab.id] = tab.index;
@@ -707,6 +709,19 @@ var session = {
 		});
 	},
 
+	setBorderColorByContainer: function(cookieStoreId, defaultColor) {
+		if (cookieStoreId != "firefox-default") {
+			var getContext = browser.contextualIdentities.get(
+				cookieStoreId
+			);
+			getContext.then((container) => {					
+				document.querySelector(".active").style.borderLeftColor = container.colorCode; // display["bordercolor"];								
+			});
+		} else {
+			document.querySelector(".active").style.borderLeftColor = defaultColor;							
+		}
+	},
+
 	load_session: async function() {
 		try {
 			let {buttons, scrollbar, display} = 
@@ -738,7 +753,8 @@ var session = {
 				div.setAttribute('id', tab.id);
 				if (tab.active) {
 					div.classList.add('active');
-				}
+					session.activeTab = tab.cookieStoreId;					
+				}				
 
 				if (display["tabindex"]) {
 					let index = document.createElement('span');
@@ -890,7 +906,7 @@ var session = {
 			}
 			
 			// some display option			
-			document.querySelector(".active").style.borderLeftColor = display["bordercolor"];	
+			session.setBorderColorByContainer(session.activeTab, display["bordercolor"]);			
 
 			document.addEventListener('keydown', keyboard.keyboard_navigation);
 			document.addEventListener('mouseover', mouse.showScrollBar);
