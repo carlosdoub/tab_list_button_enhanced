@@ -12,7 +12,7 @@
     <table>
       <tr>
         <td><input type="checkbox" id="double-line" /></td>
-        <td>Show entries in double line with Title and URL</td>
+        <td>Double line with Title and URL</td>
       </tr>
       <tr>
         <td><input type="checkbox" id="tabindex" /></td>
@@ -22,15 +22,22 @@
         <td><input type="checkbox" id="unloaded" /></td>
         <td>Dim unloaded tabs </td>
       </tr>
-    </table>          
-    <hr />
+    </table>              
+  <fieldset class="fieldsetcolor">
+    <legend>Active item border</legend>
     <table>
       <tr>
-        <td>Left border color of active item:  </td>
+        <td>Default color:</td>
         <td><input type="color" id="bordercolor" /> </tr>
+      </tr>
+      <tr>
+        <td>Use containers colors:</td>
+        <td><input type="checkbox" id="containercolor" /> </tr>
       </tr>
     </table> 
   </fieldset>
+</fieldset>
+
 <p />
   <fieldset>
 		<legend>  Show buttons:  </legend>
@@ -54,7 +61,7 @@
   <fieldset>
     <legend>  Tab count (badge):  </legend>
       <input type="checkbox" id="badge" /> Show tab count <br />
-      <fieldset id="fieldsetcolor">
+      <fieldset class="fieldsetcolor">
         <legend>  Color:  </legend>
           <table>
             <tr>

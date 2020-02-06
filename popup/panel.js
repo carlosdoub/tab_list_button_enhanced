@@ -62,7 +62,8 @@ async function loadOptions() {
 			tabindex: false,
 			double_line: false,
 			unloaded: false,
-			bordercolor: "#FF0000"
+			bordercolor: "#FF0000",
+			containercolor: false
 		}
 		await browser.storage.local.set({display});
 		loadOptions();
@@ -715,7 +716,7 @@ var session = {
 				cookieStoreId
 			);
 			getContext.then((container) => {					
-				document.querySelector(".active").style.borderLeftColor = container.colorCode; // display["bordercolor"];								
+				document.querySelector(".active").style.borderLeftColor = container.colorCode;
 			});
 		} else {
 			document.querySelector(".active").style.borderLeftColor = defaultColor;							
@@ -725,8 +726,8 @@ var session = {
 	load_session: async function() {
 		try {
 			let {buttons, scrollbar, display} = 
-				await browser.storage.local.get(["buttons", "scrollbar", "display"]);
-			
+				await browser.storage.local.get(["buttons", "scrollbar", "display"]);			
+
 			// load some options for keyboard scrolling
 			heightLines = display["double_line"]? 12:20;
 			scrollBy = display["double_line"]? 3:2;
@@ -905,8 +906,11 @@ var session = {
 				tabsMenu.appendChild(div);
 			}
 			
-			// some display option			
-			session.setBorderColorByContainer(session.activeTab, display["bordercolor"]);			
+			// some display option	
+			if (display["containercolor"])		
+				session.setBorderColorByContainer(session.activeTab, display["bordercolor"]);			
+			else
+				document.querySelector(".active").style.borderLeftColor = display["bordercolor"];
 
 			document.addEventListener('keydown', keyboard.keyboard_navigation);
 			document.addEventListener('mouseover', mouse.showScrollBar);
