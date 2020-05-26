@@ -128,7 +128,7 @@ async function populateDisplay() {
 		let display = {
 			tabindex: false,
 			double_line: false,
-			unloaded: false,
+			unloaded: true,
 			bordercolor: "#FF0000",
 			containercolor: false
 		}
