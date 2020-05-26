@@ -75,9 +75,11 @@ async function setColorOption() {
 		orange: document.querySelector('#orange').checked,
 		green: document.querySelector('#green').checked,
 		purple: document.querySelector('#purple').checked,
+		grey: document.querySelector('#grey').checked,
 		orange_tabs: document.querySelector('#orange_tabs').checked,
 		green_tabs: document.querySelector('#green_tabs').checked,
-		purple_tabs: document.querySelector('#purple_tabs').checked		
+		purple_tabs: document.querySelector('#purple_tabs').checked,
+		grey_tabs: document.querySelector('#grey_tabs').checked		
 	};
 	await browser.storage.local.set({icon});
 
@@ -87,12 +89,16 @@ async function setColorOption() {
 		browser.browserAction.setIcon({path: "../icons/16-tabs-g.png"});
 	if (icon["purple"])
 		browser.browserAction.setIcon({path: "../icons/16-tabs-p.png"});		
+	if (icon["grey"])
+		browser.browserAction.setIcon({path: "../icons/16-tabs-grey.png"});		
 	if (icon["orange_tabs"])
 		browser.browserAction.setIcon({path: "../icons/16-tabs(2).png"});
 	if (icon["green_tabs"])
 		browser.browserAction.setIcon({path: "../icons/16-tabs-g(2).png"});
 	if (icon["purple_tabs"])
 		browser.browserAction.setIcon({path: "../icons/16-tabs-p(2).png"});
+	if (icon["grey_tabs"])
+		browser.browserAction.setIcon({path: "../icons/16-tabs-grey(2).png"});
 }
 
 async function setBadgeOption() {
@@ -165,9 +171,11 @@ async function populateColors() {
 			orange: true,
 			green: false,
 			purple: false,
+			grey: false,
 			orange_tabs: false,
 			green_tabs: false,
-			purple_tabs: false
+			purple_tabs: false,
+			grey_tabs: false
 		};
 		await browser.storage.local.set({icon});
 		populateColors();
@@ -175,9 +183,11 @@ async function populateColors() {
 		document.querySelector('#orange').checked = icon["orange"];
 		document.querySelector('#green').checked = icon["green"];		
 		document.querySelector('#purple').checked = icon["purple"];
+		document.querySelector('#grey').checked = icon["grey"];
 		document.querySelector('#orange_tabs').checked = icon["orange_tabs"];
 		document.querySelector('#green_tabs').checked = icon["green_tabs"];		
 		document.querySelector('#purple_tabs').checked = icon["purple_tabs"];
+		document.querySelector('#grey_tabs').checked = icon["grey_tabs"];
 	}
 }
 
@@ -252,9 +262,11 @@ document.querySelector('#remove').addEventListener('change', setButtonOption)
 document.querySelector('#orange').addEventListener('change', setColorOption)
 document.querySelector('#green').addEventListener('change', setColorOption)
 document.querySelector('#purple').addEventListener('change', setColorOption)
+document.querySelector('#grey').addEventListener('change', setColorOption)
 document.querySelector('#orange_tabs').addEventListener('change', setColorOption)
 document.querySelector('#green_tabs').addEventListener('change', setColorOption)
 document.querySelector('#purple_tabs').addEventListener('change', setColorOption)
+document.querySelector('#grey_tabs').addEventListener('change', setColorOption)
 
 /**
  * Badge options

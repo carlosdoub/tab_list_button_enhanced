@@ -6,9 +6,11 @@ async function loadIcon() {
 			orange: true,
 			green: false,
 			purple: false,
+			grey: false,
 			orange_tabs: false,
 			green_tabs: false,
-			purple_tabs: false
+			purple_tabs: false,
+			grey_tabs: false
 		};
 		await browser.storage.local.set({icon});
 		loadIcon();
@@ -19,12 +21,16 @@ async function loadIcon() {
 			browser.browserAction.setIcon({path: "icons/16-tabs-g.png"});
 		if (icon["purple"])
 			browser.browserAction.setIcon({path: "icons/16-tabs-p.png"});
+		if (icon["grey"])
+			browser.browserAction.setIcon({path: "../icons/16-tabs-grey.png"});
 		if (icon["orange_tabs"])
 			browser.browserAction.setIcon({path: "icons/16-tabs(2).png"});
 		if (icon["green_tabs"])
 			browser.browserAction.setIcon({path: "icons/16-tabs-g(2).png"});
 		if (icon["purple_tabs"])
 			browser.browserAction.setIcon({path: "icons/16-tabs-p(2).png"});
+		if (icon["grey_tabs"])
+			browser.browserAction.setIcon({path: "../icons/16-tabs-grey(2).png"});
 	}
 }
 
