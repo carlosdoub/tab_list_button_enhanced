@@ -116,7 +116,8 @@ async function setBadgeOption() {
 async function setScrollbarOption() {
 	let scrollbar = {
 		mouse: document.querySelector('#mouse').checked,
-		keyboard: document.querySelector('#keyboard').checked
+		keyboard: document.querySelector('#keyboard').checked,
+		activetab: document.querySelector('#active').checked
 	};
 	await browser.storage.local.set({scrollbar});
 }
@@ -210,16 +211,19 @@ async function populateBadge() {
 
 async function populateScrollbar() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined') {
+	if (typeof scrollbar === 'undefined' || typeof scrollbar["activetab"] === 'undefined') {
 		let scrollbar = {
 			mouse: false,
-			keyboard: true
+			keyboard: true,
+			activetab: true
 		};
 		await browser.storage.local.set({scrollbar});
 		populateScrollbar();
 	} else {
 		document.querySelector('#mouse').checked = scrollbar["mouse"];
 		document.querySelector('#keyboard').checked = scrollbar["keyboard"];		
+		document.querySelector('#active').checked = scrollbar["activetab"];		
+		document.querySelector('#top').checked = !scrollbar["activetab"];		
 	}
 }
 
@@ -280,6 +284,8 @@ document.querySelector('#bgcolor').addEventListener('change', setBadgeOption)
  * */
 document.querySelector('#mouse').addEventListener('change', setScrollbarOption)
 document.querySelector('#keyboard').addEventListener('change', setScrollbarOption)
+document.querySelector('#active').addEventListener('change', setScrollbarOption)
+document.querySelector('#top').addEventListener('change', setScrollbarOption)
 
 
 populateDisplay();

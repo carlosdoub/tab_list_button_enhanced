@@ -73,10 +73,11 @@ async function loadButtonsOptions() {
 
 async function loadScrollbarOptions() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined') {
+	if (typeof scrollbar === 'undefined' || typeof scrollbar["activetab"] === 'undefined') {
 		let scrollbar = {
 			mouse: false,
-			keyboard: true
+			keyboard: true,
+			activetab: true
 		};
 		await browser.storage.local.set({scrollbar});
 		loadScrollbarOptions();
@@ -700,8 +701,15 @@ var session = {
 	setFirstElement: function(div) {
 		if (this.first) {
 			old_node = div;
+			new_node = div;
 			this.first = false;
+			div.classList.add('hover');
 		}
+	},
+
+	scrollToTab: function() {
+		let v = Math.floor(session.activeScrollTo / heightLines) * 600;
+		window.scrollTo(0,v);	
 	},
 
 	getIndexNumber: function(tabs, index) {
@@ -740,7 +748,7 @@ var session = {
 	load_session: async function() {
 		try {
 			let {buttons, scrollbar, display} = 
-				await browser.storage.local.get(["buttons", "scrollbar", "display"]);			
+				await browser.storage.local.get(["buttons", "scrollbar", "display"]);
 
 			// load some options for keyboard scrolling
 			heightLines = display["double_line"]? 12:20;
@@ -769,6 +777,7 @@ var session = {
 				if (tab.active) {
 					div.classList.add('active');
 					session.activeTab = tab.cookieStoreId;					
+					session.activeScrollTo = tab.index;					
 				}				
 
 				if (display["tabindex"]) {
@@ -912,12 +921,18 @@ var session = {
 				if (display["unloaded"])
 					session.testLoadedTab(tab, div);
 				
-				session.setFirstElement(div);
-
 				div.addEventListener('mouseenter', mouse.mouse_navigation_enter);
 				div.addEventListener('mouseleave', mouse.mouse_navigation_leave);
 
 				tabsMenu.appendChild(div);
+
+				if (scrollbar["activetab"]) {
+					if (tab.active) { 
+						session.setFirstElement(div);
+					}
+				} else {
+					session.setFirstElement(div);
+				}
 			}
 			
 			// some display option	
@@ -930,7 +945,11 @@ var session = {
 			document.addEventListener('mouseover', mouse.showScrollBar);
 			document.addEventListener('click', function(e) {context_menu.clickEvent(e);});
 			document.addEventListener('contextmenu', function(e) {context_menu.right_click_menu(e);});
+			
+			if (scrollbar["activetab"]) 
+				session.scrollToTab();
 
+			console.log(scrollbar);
 		} catch (error) {
 			console.log(`Error: ${error}`);
 		}

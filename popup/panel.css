@@ -1,6 +1,5 @@
 html, body {
     min-width: 250px;
-    
 }
 
 body {
@@ -9,7 +8,7 @@ body {
 }
 
 .group {
-    padding: 4px;
+    padding: 4px 2px;
 }
 
 *,
@@ -48,7 +47,7 @@ img.favicon {
     overflow-x:hidden;
     text-overflow: ellipsis;
     white-space:nowrap;
-	  display: inline-block;
+	display: inline-block;
     vertical-align: middle;
 }
 
@@ -63,7 +62,7 @@ img.favicon {
 .active {
 	font-weight: bold;
 	border-left: 3px solid red; /* 1px from button/hover border and 2px from button/hover left and right margin */
-  margin-left: 0px;  
+	margin-left: 0px;  
 }
 
 .hover {
