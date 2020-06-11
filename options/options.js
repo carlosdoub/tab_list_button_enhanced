@@ -211,7 +211,7 @@ async function populateBadge() {
 
 async function populateScrollbar() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined' || typeof scrollbar["activetab"] === 'undefined') {
+	if (typeof scrollbar === 'undefined') {
 		let scrollbar = {
 			mouse: false,
 			keyboard: true,
@@ -220,10 +220,16 @@ async function populateScrollbar() {
 		await browser.storage.local.set({scrollbar});
 		populateScrollbar();
 	} else {
-		document.querySelector('#mouse').checked = scrollbar["mouse"];
-		document.querySelector('#keyboard').checked = scrollbar["keyboard"];		
-		document.querySelector('#active').checked = scrollbar["activetab"];		
-		document.querySelector('#top').checked = !scrollbar["activetab"];		
+		if (typeof scrollbar["activetab"] === 'undefined') {
+			scrollbar["activetab"] = true;
+			await browser.storage.local.set({scrollbar});
+			populateScrollbar();
+		} else {
+			document.querySelector('#mouse').checked = scrollbar["mouse"];
+			document.querySelector('#keyboard').checked = scrollbar["keyboard"];		
+			document.querySelector('#active').checked = scrollbar["activetab"];		
+			document.querySelector('#top').checked = !scrollbar["activetab"];		
+		}
 	}
 }
 

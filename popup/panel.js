@@ -73,7 +73,7 @@ async function loadButtonsOptions() {
 
 async function loadScrollbarOptions() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined' || typeof scrollbar["activetab"] === 'undefined') {
+	if (typeof scrollbar === 'undefined') {
 		let scrollbar = {
 			mouse: false,
 			keyboard: true,
@@ -82,6 +82,12 @@ async function loadScrollbarOptions() {
 		await browser.storage.local.set({scrollbar});
 		loadScrollbarOptions();
 	} else {		
+		if (typeof scrollbar["activetab"] === 'undefined') {
+			scrollbar["activetab"] = true;
+			await browser.storage.local.set({scrollbar});
+			loadScrollbarOptions();
+		} else {
+		}
 	}
 }
 
@@ -949,7 +955,6 @@ var session = {
 			if (scrollbar["activetab"]) 
 				session.scrollToTab();
 
-			console.log(scrollbar);
 		} catch (error) {
 			console.log(`Error: ${error}`);
 		}
