@@ -47,6 +47,23 @@ async function showBadge() {
 	}, 500);
 }
 
+async function showBadge2() {
+	let {badge} = await browser.storage.local.get("badge");
+	
+	setTimeout(async () => {
+		let windows = await browser.windows.getAll();
+		for (let window of windows) {		
+			let query = {
+				windowId: window.id
+			};
+			let tabs = await browser.tabs.query(query);				
+			browser.browserAction.setBadgeText({text: tabs.length.toString(), windowId: window.id});		
+			browser.browserAction.setBadgeTextColor({color: badge["textColor"]});
+			browser.browserAction.setBadgeBackgroundColor({color: badge["backgroundColor"]});		
+		}		
+	}, 500);
+}
+
 async function initBadge() {
 	let {badge} = await browser.storage.local.get("badge");
 	
@@ -87,10 +104,14 @@ async function loadBadge() {
 		if (badge["display"] === true) {			
 			browser.tabs.onCreated.addListener(showBadge);
 			browser.tabs.onRemoved.addListener(showBadge);
+			browser.tabs.onAttached.addListener(showBadge2)
+			//browser.tabs.onDetached.addListener(showBadge)
 			initBadge();
 		} else {
 			browser.tabs.onCreated.removeListener(showBadge);
 			browser.tabs.onRemoved.removeListener(showBadge);
+			browser.tabs.onAttached.removeListener(showBadge2)
+			//browser.tabs.onDetached.removeListener(showBadge)
 			removeBadge();
 		}
 	}
