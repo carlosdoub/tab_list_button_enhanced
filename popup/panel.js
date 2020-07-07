@@ -604,7 +604,37 @@ var keyboard = {
 
 
 var mouse = {
-	
+
+	setMutedClick: async function(tab, double_line) {
+		var voice = document.getElementById("voice_"+tab.id);
+		await browser.tabs.update(tab.id, {
+			muted: false
+		});
+		if (double_line)
+			voice.src = browser.runtime.getURL("popup/img/icons8-voice-24.png");
+		else
+			voice.src = browser.runtime.getURL("popup/img/icons8-voice-16.png");
+		voice.classList.add('audible');
+		voice.addEventListener('click', function() {
+			mouse.setAudibleClick(tab, double_line);
+		});
+	},
+
+	setAudibleClick: async function(tab, double_line) {
+		var voice = document.getElementById("voice_"+tab.id);
+		await browser.tabs.update(tab.id, {
+			muted: true
+		});
+		if (double_line)
+			voice.src = browser.runtime.getURL("popup/img/icons8-mute-24.png");
+		else
+			voice.src = browser.runtime.getURL("popup/img/icons8-mute-16.png");
+		voice.classList.add('audible');
+		voice.addEventListener('click', function() {
+			mouse.setMutedClick(tab, double_line);
+		});
+	},
+
 	pinTabClick: async function(id) {
 		await browser.tabs.update(id, {pinned: !pinned[id]});
 		
@@ -822,7 +852,39 @@ var session = {
 				});
 				div.append(img);
 
+
+				if(tab.audible && !tab.mutedInfo.muted) {
+					let audible = document.createElement('img');
+					audible.setAttribute('id', "voice_"+tab.id);
+				
+					if (display["double_line"])
+						audible.src = browser.runtime.getURL("popup/img/icons8-voice-24.png");
+					else
+						audible.src = browser.runtime.getURL("popup/img/icons8-voice-16.png");
+				
+					audible.classList.add('audible');
+					audible.addEventListener('click', function() {
+						mouse.setAudibleClick(tab, display["double_line"]);
+					});
+					div.append(audible);
+				} else if(tab.mutedInfo.muted) {
+					let audible = document.createElement('img');
+					audible.setAttribute('id', "voice_"+tab.id);
+					
+					if (display["double_line"])
+						audible.src = browser.runtime.getURL("popup/img/icons8-mute-24.png");
+					else
+						audible.src = browser.runtime.getURL("popup/img/icons8-mute-16.png");
+
+					audible.classList.add('audible');
+					audible.addEventListener('click', function() {
+						mouse.setMutedClick(tab, display["double_line"]);
+					});
+					div.append(audible);
+				}
+
 				if (display["double_line"]) {
+
 					let span = document.createElement('div');
 					span.setAttribute('id', "span_"+tab.id);
 					span.innerText = tab.title;

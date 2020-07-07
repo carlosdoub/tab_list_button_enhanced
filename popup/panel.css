@@ -24,7 +24,7 @@ body {
     margin-right: 2px;
 }
 
-img.favicon {
+img.favicon, img.audible {
     padding: 4px;
     box-sizing: content-box;
     vertical-align: middle;
