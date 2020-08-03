@@ -426,7 +426,7 @@ var keyboard = {
 	},
 
 	upKey: function() {
-		new_node = old_node.previousSibling;
+		new_node = old_node.previousSibling? old_node.previousSibling:old_node;
 		if (this.checkNewNode()) {			
 			misc.nodeToggle();				
 			this.scrollMenuUp();
@@ -434,7 +434,7 @@ var keyboard = {
 	},
 
 	downKey: function() {
-		new_node = old_node.nextSibling;		
+		new_node = old_node.nextSibling? old_node.nextSibling:old_node;
 		if (this.checkNewNode()) {			
 			misc.nodeToggle();			
 			this.scrollMenuDown();

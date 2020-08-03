@@ -47,7 +47,7 @@ async function showBadge() {
 	}, 500);
 }
 
-async function showBadge2() {
+async function showBadgeAll() {
 	let {badge} = await browser.storage.local.get("badge");
 	
 	setTimeout(async () => {
@@ -104,13 +104,13 @@ async function loadBadge() {
 		if (badge["display"] === true) {			
 			browser.tabs.onCreated.addListener(showBadge);
 			browser.tabs.onRemoved.addListener(showBadge);
-			browser.tabs.onAttached.addListener(showBadge2)
+			browser.tabs.onAttached.addListener(showBadgeAll)
 			//browser.tabs.onDetached.addListener(showBadge)
 			initBadge();
 		} else {
 			browser.tabs.onCreated.removeListener(showBadge);
 			browser.tabs.onRemoved.removeListener(showBadge);
-			browser.tabs.onAttached.removeListener(showBadge2)
+			browser.tabs.onAttached.removeListener(showBadgeAll)
 			//browser.tabs.onDetached.removeListener(showBadge)
 			removeBadge();
 		}
