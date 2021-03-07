@@ -1,0 +1,157 @@
+html, body {
+    min-width: 250px;
+}
+
+body {
+    overflow-y:hidden; 
+    max-height: 599px; /* To allow automatic shrink of the size when removing items (600px is the max and when it reaches it does not shrink automatically) */        
+}
+
+.group {
+    padding: 4px 2px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.button {
+    padding: 2px;
+    border:1px solid #ffffff;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+img.favicon, img.audible {
+    padding: 4px;
+    box-sizing: content-box;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.disabled {
+    color:grey;
+}
+.enabled {
+  color:#000;
+}
+
+.item {
+    padding: 4px;
+    font-size: 1em;
+    cursor: pointer;
+
+    width:320px;
+    overflow-x:hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+	display: inline-block;
+    vertical-align: middle;
+}
+
+/*
+.button:hover {
+    border:1px solid #999999;
+    background: #f9f9f9;
+    border-radius: 2px;
+}
+*/
+
+.active {
+	font-weight: bold;
+	border-left: 3px solid red; /* 1px from button/hover border and 2px from button/hover left and right margin */
+	margin-left: 0px;  
+}
+
+.hover {
+  border:1px solid #999999;
+  background: #f9f9f9;
+  border-radius: 2px;	
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+img.ctrl {
+	float:right;
+  cursor: pointer;
+	
+  padding: 4px;
+  box-sizing: content-box;
+  vertical-align: middle;
+}
+
+span.index {
+	color:grey;
+	font-size: 9px;
+
+	display: inline-block;
+  padding: 4px;  
+  box-sizing: content-box;
+  vertical-align: middle;
+}
+
+div.index {
+  color:grey;
+  font-size: 9px;
+  padding: 4px 0 4px 0; 
+}
+
+input {
+  padding: 0;
+  margin:0;
+  vertical-align: middle;
+}
+
+hr {
+    border: 0;
+    border-bottom:1px solid #999999;
+}
+
+/* https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/ */
+/* context menu */
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  padding: 0;
+  width: 140px;
+  background-color: #fff;
+  border: solid 1px #dfdfdf;
+  box-shadow: 1px 1px 2px #cfcfcf;
+}
+
+.context-menu--active {
+  display: block;
+}
+
+.context-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu__item {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.context-menu__item:last-child {
+  margin-bottom: 0;
+}
+
+.context-menu__link {
+  display: block;
+  padding: 4px 12px;
+  color: #0066aa;
+  text-decoration: none;
+}
+
+.context-menu__link:hover {
+  color: #fff;
+  background-color: #0066aa;
+}
+
+

@@ -1,0 +1,54 @@
+{
+    "applications": {
+        "gecko": {
+            "id": "tablistbuttonenhanced@doub"
+        }
+    },
+    "author": "ccDoub",
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": {
+            "16": "icons/16-tabs.png",
+            "24": "icons/24-tabs.png",
+            "32": "icons/32-tabs.png",
+            "48": "icons/48-tabs.png"
+        },
+        "default_popup": "popup/panel.html",
+        "default_title": "Tab List"
+    },
+    "description": "Another button for tab lists with keyboard navigation, configurable buttons and a context menu for common actions.",
+    "icons": {
+        "16": "icons/16-tabs.png",
+        "24": "icons/24-tabs.png",
+        "32": "icons/32-tabs.png",
+        "48": "icons/48-tabs.png"
+    },
+    "manifest_version": 2,
+    "name": "Tab List Button Enhanced",
+    "permissions": [
+        "tabs",
+        "storage",
+        "bookmarks",
+        "contextualIdentities",
+        "cookies"        
+    ],
+    "version": "2.11.1",
+
+	"background": {"scripts": ["background.js"]},
+
+	"commands": {
+	  "_execute_browser_action": {
+		"suggested_key": {
+		  "default": "Ctrl+Shift+Y"
+		}
+	  }
+	},
+
+  "options_ui": {
+    "page": "options/options.html",
+    "browser_style": true,
+    "open_in_tab": false
+  }
+
+
+}

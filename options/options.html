@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="/options/options.css"/>
+  </head>
+
+<body>
+  <fieldset>
+		<legend>  Display options:  </legend>  
+    <table>
+      <tr>
+        <td><input type="checkbox" id="double-line" /></td>
+        <td>Double line with Title and URL</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" id="tabindex" /></td>
+        <td>Show tab index</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" id="unloaded" /></td>
+        <td>Dim unloaded tabs </td>
+      </tr>
+    </table>              
+  <fieldset class="fieldsetcolor">
+    <legend>Active item border</legend>
+    <table>
+      <tr>
+        <td>Default color:</td>
+        <td><input type="color" id="bordercolor" /> </tr>
+      </tr>
+      <tr>
+        <td>Use containers colors:</td>
+        <td><input type="checkbox" id="containercolor" /> </tr>
+      </tr>
+    </table> 
+  </fieldset>
+</fieldset>
+
+<p />
+  <fieldset>
+		<legend>  Show buttons:  </legend>
+		<input type="checkbox" id="viewurl" /> View URL <img src="img/s_info.png" /> <br />
+		<input type="checkbox" id="bookmark" /> Bookmark <img src="img/b_bookmark.png" /> <br />
+		<input type="checkbox" id="pin" /> Pin <img src="img/favicon-16x16.png" /> <br />
+		<input type="checkbox" id="reload" /> Reload <img src="img/s_reload.png" />  <br />
+		<input type="checkbox" id="remove" /> Remove <img src="img/b_drop.png" /> <br />
+	</fieldset>
+  <p />
+  <fieldset>
+		<legend>  Select icon:  </legend>
+      <input type="radio" name="icon" id="orange" /> <img src="img/16-tabs.png" /> &nbsp;
+      <input type="radio" name="icon" id="green" /> <img src="img/16-tabs-g.png" /> &nbsp;
+      <input type="radio" name="icon" id="purple" /> <img src="img/16-tabs-p.png" /> &nbsp;
+      <input type="radio" name="icon" id="grey" /> <img src="img/16-tabs-grey.png" /> <br /> 
+      <input type="radio" name="icon" id="orange_tabs" /> <img src="img/16-tabs(2).png" /> &nbsp;
+      <input type="radio" name="icon" id="green_tabs" /> <img src="img/16-tabs-g(2).png" /> &nbsp;
+      <input type="radio" name="icon" id="purple_tabs" /> <img src="img/16-tabs-p(2).png" /> &nbsp;
+      <input type="radio" name="icon" id="grey_tabs" /> <img src="img/16-tabs-grey(2).png" /> <br /> 
+  </fieldset>
+  <p />
+  <fieldset>
+    <legend>  Tab count (badge):  </legend>
+      <input type="checkbox" id="badge" /> Show tab count <br />
+      <fieldset class="fieldsetcolor">
+        <legend>  Color:  </legend>
+          <table>
+            <tr>
+              <td>Background: </td>
+              <td><input type="color" id="bgcolor" /></td>
+            </tr>
+            <tr>
+              <td>Text: </td>
+              <td><input type="color" id="textcolor" /> </td>
+            </tr>
+          </table>
+        </fieldset>
+    </fieldset>
+  <p />
+  <fieldset>
+    <legend>  Default behavior:  </legend>
+    <input type="radio" name="scrollbar" id="mouse" /> Mouse (show scrollbar) <br />
+    <input type="radio" name="scrollbar" id="keyboard" /> Keyboard (hide scrollbar) <br />
+	<hr>
+    <input type="radio" name="startscroll" id="top" /> Start to scroll from top <br />
+    <input type="radio" name="startscroll" id="active" /> Start to scroll from active tab<br />
+
+  </fieldset>
+  <p />
+  <form>
+      <label>Keyboard shortcut: </label>
+      <input type="text" id="shortcut" >
+      <button id="update">Update</button>
+      <button id="reset">Restore</button>
+  </form>
+  <p>
+  <span href="#" id="showInstructions">Show instructions</span>
+  <span id="hideInstructions">Hide instructions</span>
+	</p>
+
+  <div id="instructions">
+  <h2 id="Shortcut_values">Shortcut values</h2> 
+
+<p>There are two valid formats for the shortcut keys: as a key combination or as a media key.</p>
+
+<h3 id="Key_combinations">Key combinations</h3>
+
+<div class="pull-aside">
+<div class="moreinfo">On Macs, "Ctrl" is interpreted as "Command", so if you actually need "Ctrl", specify "MacCtrl".</div>
+</div>
+
+<p>Key combinations must consist of two or three keys:</p>
+
+<ul>
+ <li><strong>modifier</strong> (mandatory, except for function keys). This can be any of: "Ctrl", "Alt", "Command", "MacCtrl".</li>
+ <li><strong>secondary modifier</strong> (optional). If supplied, this must be either "Shift" or (for Firefox ≥ 63) any one of "Ctrl", "Alt", "Command" and "MacCtrl", which has not been used as the main modifier.</li>
+ <li><strong>key</strong> (mandatory). This can be any one of:
+  <ul>
+   <li>the letters A-Z</li>
+   <li>the numbers 0-9</li>
+   <li>the function keys F1-F12</li>
+   <li>Comma, Period, Home, End, PageUp, PageDown, Space, Insert, Delete, Up, Down, Left, Right</li>
+  </ul>
+ </li>
+</ul>
+
+<p>The key is then given as a string containing the set of key values, in the order listed above, separated by "+": for example, "Ctrl+Shift+Z".</p>
+
+<p>If a key combination is already used by the browser (for example, "Ctrl+P"), or by an existing add-on, then you can't override it. You will be allowed to define it, but your event handler will not be called when the user enters it.</p>
+
+<h3 id="Media_keys">Media keys</h3> 
+
+<p>Alternatively, the shortcut may be specified as one of the following media keys:</p>
+
+<ul>
+ <li>"MediaNextTrack", "MediaPlayPause", "MediaPrevTrack", "MediaStop"</li>
+</ul>
+
+  Source: <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands">https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands</a>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+
+</html>
+
