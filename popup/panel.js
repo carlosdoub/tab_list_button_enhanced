@@ -6,8 +6,8 @@ var active = {};
 var infoUrl = {};
 var pinned = {};
 var tempId = null;
-var heightLines = 12;
-var scrollBy = 3;
+var heightLines;
+var scrollBy;
 
 // From https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/
 /**
@@ -404,13 +404,13 @@ var keyboard = {
 	scrollMenuUp: function() {
 		// checks when to start scrolling
 		if (indexes[new_node.id] < Object.keys(indexes).length - this.menuLinesStartScroll())
-			window.scrollByLines(-scrollBy);
+			window.scrollTo(0, window.scrollY-scrollBy);	
 	},
 
 	scrollMenuDown: function() {
 		// checks when to start scrolling
 		if (indexes[new_node.id] > this.menuLinesStartScroll())
-			window.scrollByLines(scrollBy);
+			window.scrollTo(0, window.scrollY+scrollBy);	
 	},
 
 	scrollMenuBegin: function() {
@@ -787,8 +787,9 @@ var session = {
 				await browser.storage.local.get(["buttons", "scrollbar", "display"]);
 
 			// load some options for keyboard scrolling
+			let factor = 15; //Hotfix for Firefox Addons change
 			heightLines = display["double_line"]? 12:20;
-			scrollBy = display["double_line"]? 3:2;
+			scrollBy = display["double_line"]? 3.3*factor:2*factor;
 
 			if (scrollbar["mouse"])
 				mouse.showScrollBar();
