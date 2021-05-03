@@ -61,8 +61,6 @@ img.favicon, img.audible {
 
 .active {
 	font-weight: bold;
-	border-left: 3px solid red; /* 1px from button/hover border and 2px from button/hover left and right margin */
-	margin-left: 0px;  
 }
 
 .hover {
@@ -98,16 +96,6 @@ div.index {
   padding: 4px 0 4px 0; 
 }
 
-input {
-  padding: 0;
-  margin:0;
-  vertical-align: middle;
-}
-
-hr {
-    border: 0;
-    border-bottom:1px solid #999999;
-}
 
 /* https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/ */
 /* context menu */
