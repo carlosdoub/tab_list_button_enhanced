@@ -31,21 +31,23 @@ async function resetShortcut() {
 }
 
 /*
- * Show instructions
+ * Toggle instructions
  * */
-function showInstructions() {
-	document.querySelector("#instructions").style.display = "block";
-	document.querySelector("#showInstructions").style.display = "none";
-	document.querySelector("#hideInstructions").style.display = "block";
+function toggleInstructions() {
+	if (document.querySelector("#instructions").style.display == 'none') {
+		document.querySelector("#instructions").style.display = "block";
+		document.querySelector("#instructionsText").innerText = "Hide instructions";
+	} else {
+		document.querySelector("#instructions").style.display = "none";
+		document.querySelector("#instructionsText").innerText = "Show instructions";
+	}
 }
 
-/*
- * Hide instructions
- * */
-function hideInstructions() {
-	document.querySelector("#instructions").style.display = "none";
-	document.querySelector("#showInstructions").style.display = "block";
-	document.querySelector("#hideInstructions").style.display = "none";
+function toggleActiveBorder() {
+	if (document.querySelector("#active-border").checked) 
+		document.querySelector("#active-border-options").style.display = "block";
+	else
+		document.querySelector("#active-border-options").style.display = "none";
 }
 
 async function setDisplayOption() {
@@ -54,7 +56,8 @@ async function setDisplayOption() {
 		double_line: document.querySelector('#double-line').checked,
 		unloaded: document.querySelector('#unloaded').checked,
 		bordercolor: document.querySelector('#bordercolor').value,
-		containercolor: document.querySelector('#containercolor').checked
+		containercolor: document.querySelector('#containercolor').checked,
+		containercolorall: document.querySelector('#containercolorall').checked
 	};
 	await browser.storage.local.set({display});
 }
@@ -131,7 +134,8 @@ async function populateDisplay() {
 			double_line: false,
 			unloaded: true,
 			bordercolor: "#FF0000",
-			containercolor: false
+			containercolor: false,
+			containercolorall: false
 		}
 		await browser.storage.local.set({display});
 		populateDisplay();
@@ -141,6 +145,14 @@ async function populateDisplay() {
 		document.querySelector('#unloaded').checked = display["unloaded"];		
 		document.querySelector('#bordercolor').value = display["bordercolor"];	
 		document.querySelector('#containercolor').checked = display["containercolor"];			
+
+		if (display["containercolorall"]) {
+			document.querySelector('#containercolorall').checked = true;
+			document.querySelector("#active-border-options").style.display = "none";
+		} else {
+			document.querySelector("#active-border").checked = true;
+			document.querySelector("#active-border-options").style.display = "block";
+		}
 	}
 }
 
@@ -245,8 +257,7 @@ document.addEventListener('DOMContentLoaded', updateUI);
 document.querySelector('#update').addEventListener('click', updateShortcut)
 document.querySelector('#reset').addEventListener('click', resetShortcut)
 
-document.querySelector('#showInstructions').addEventListener('click', showInstructions)
-document.querySelector('#hideInstructions').addEventListener('click', hideInstructions)
+document.querySelector('#instructionsText').addEventListener('click', toggleInstructions)
 
 /**
  * Display options
@@ -256,6 +267,14 @@ document.querySelector('#double-line').addEventListener('change', setDisplayOpti
 document.querySelector('#bordercolor').addEventListener('change', setDisplayOption)
 document.querySelector('#unloaded').addEventListener('change', setDisplayOption)
 document.querySelector('#containercolor').addEventListener('change', setDisplayOption)
+document.querySelector('#containercolorall').addEventListener('change', function(){
+	setDisplayOption();
+	toggleActiveBorder();
+})
+document.querySelector('#active-border').addEventListener('change', function(){
+	setDisplayOption();
+	toggleActiveBorder();
+})
 
 /**
  * Buttons options
