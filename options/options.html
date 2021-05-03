@@ -23,16 +23,27 @@
         <td>Dim unloaded tabs </td>
       </tr>
     </table>              
-  <fieldset class="fieldsetcolor">
-    <legend>Active item border</legend>
+	  <hr>
+    <table>
+      <tr>
+        <td><input type="radio" name="borders" id="containercolorall" /></td>
+        <td>Use all items with containers colors</td>
+      </tr>
+      <tr>
+        <td><input type="radio" name="borders" id="active-border" /></td>
+        <td>Use only active item with color</td>
+      </tr>
+    </table>              
+  <fieldset id="active-border-options" class="fieldsetcolor">
+    <legend>Active item border:</legend>
     <table>
       <tr>
         <td>Default color:</td>
-        <td><input type="color" id="bordercolor" /> </tr>
+        <td><input type="color" id="bordercolor" /> </td>
       </tr>
       <tr>
         <td>Use containers colors:</td>
-        <td><input type="checkbox" id="containercolor" /> </tr>
+        <td><input type="checkbox" id="containercolor" /> </td>
       </tr>
     </table> 
   </fieldset>
@@ -95,11 +106,10 @@
       <button id="reset">Restore</button>
   </form>
   <p>
-  <span href="#" id="showInstructions">Show instructions</span>
-  <span id="hideInstructions">Hide instructions</span>
+  <u id="instructionsText">Show instructions</u>
 	</p>
 
-  <div id="instructions">
+  <div id="instructions" style="display:none">
   <h2 id="Shortcut_values">Shortcut values</h2> 
 
 <p>There are two valid formats for the shortcut keys: as a key combination or as a media key.</p>

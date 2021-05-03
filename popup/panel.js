@@ -47,11 +47,18 @@ async function loadDisplayOptions() {
 			double_line: false,
 			unloaded: true,
 			bordercolor: "#FF0000",
-			containercolor: false
+			containercolor: false,
+			containercolorall: false,
 		}
 		await browser.storage.local.set({display});
 		loadDisplayOptions();
 	} else {					
+		if (typeof display["containercolorall"] === 'undefined') {
+			display["containercolorall"] = false;
+			await browser.storage.local.set({display});
+			loadDisplayOptions();
+		} else {
+		}
 	}
 }
 
@@ -774,10 +781,25 @@ var session = {
 				cookieStoreId
 			);
 			getContext.then((container) => {					
-				document.querySelector(".active").style.borderLeftColor = container.colorCode;
+				document.querySelector(".active").style.borderLeft = `3px solid ${container.colorCode}`;
+				document.querySelector(".active").style.marginLeft = '0px';
 			});
 		} else {
-			document.querySelector(".active").style.borderLeftColor = defaultColor;							
+			document.querySelector(".active").style.borderLeft = `3px solid ${defaultColor}`;
+			document.querySelector(".active").style.marginLeft = '0px';
+		}
+	},
+
+	setBorderColorByContainerAllTabs: function(div, cookieStoreId) {
+		if (cookieStoreId != "firefox-default") {
+			var getContext = browser.contextualIdentities.get(
+				cookieStoreId
+			);
+			getContext.then((container) => {					
+				div.style.borderLeft = `3px solid ${container.colorCode}`;
+				div.style.marginLeft = '0px';
+			});
+		} else {
 		}
 	},
 
@@ -987,6 +1009,9 @@ var session = {
 					div.append(info);
 				}
 				
+				if (display["containercolorall"])
+					session.setBorderColorByContainerAllTabs(div, tab.cookieStoreId);
+
 				if (display["unloaded"])
 					session.testLoadedTab(tab, div);
 				
@@ -1005,10 +1030,14 @@ var session = {
 			}
 			
 			// some display option	
-			if (display["containercolor"])		
-				session.setBorderColorByContainer(session.activeTab, display["bordercolor"]);			
-			else
-				document.querySelector(".active").style.borderLeftColor = display["bordercolor"];
+			if (!display["containercolorall"]) {
+				if (display["containercolor"])		
+					session.setBorderColorByContainer(session.activeTab, display["bordercolor"]);			
+				else {
+					document.querySelector(".active").style.borderLeft = `3px solid ${display["bordercolor"]}`;
+					document.querySelector(".active").style.marginLeft = '0px';
+				}
+			}
 
 			document.addEventListener('keydown', keyboard.keyboard_navigation);
 			document.addEventListener('mouseover', mouse.showScrollBar);
