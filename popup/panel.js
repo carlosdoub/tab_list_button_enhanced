@@ -461,7 +461,6 @@ var keyboard = {
 	},
 	
 	enterKey: async function() {
-    console.log(new_node.id);
 		await browser.tabs.update(parseInt(new_node.id), {
 			active: true,
 		});
