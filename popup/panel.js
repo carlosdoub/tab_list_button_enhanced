@@ -461,6 +461,7 @@ var keyboard = {
 	},
 	
 	enterKey: async function() {
+    console.log(new_node.id);
 		await browser.tabs.update(parseInt(new_node.id), {
 			active: true,
 		});
@@ -547,6 +548,24 @@ var keyboard = {
 
 	},
 
+  selectTab: async function(key) {
+    tabNumber = -1;
+    // Lakukan Check ID nya
+    for(const t of Object.entries(indexes)) {
+      // console.log(t);
+      if (t[1] == key-1) {
+        tabNumber = t[0]; // Fill with tab id, mapping key to tab ID
+      }
+    }
+    
+    if (tabNumber == -1) return; // stop if the tab isn't found!
+
+		await browser.tabs.update(parseInt(tabNumber), {
+			active: true,
+		});
+		window.close();
+	},
+
 	keyboard_navigation: function(e) {
 		keyboard.hideScrollBar();
 
@@ -597,6 +616,19 @@ var keyboard = {
 			case 80: // P
 				keyboard.pinKey();
 				break;
+
+      case 49:
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+      case 54:
+      case 55:
+      case 56:
+      case 57:
+        var tabNumber = String.fromCharCode(key);
+        keyboard.selectTab(tabNumber);
+        break;
 
 			default: return; // exit this handler for other keys
 		}
