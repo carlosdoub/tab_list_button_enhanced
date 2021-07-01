@@ -271,14 +271,21 @@ var context_menu = {
 		}
 	},
 
-	right_click_menu: function(e) {
+	right_click_menu: async function(e) {
 		let id = this.getId(e.target.id);
 		tempId = null;
 		e.preventDefault();
-		
 		if (id) {
 			tempId = id;
+      let t = await browser.tabs.get(parseInt(id)); 
 
+      pin = document.querySelector("#context-menu span[data-action=pin]");
+      // When pinned, change the context menu
+      if (t.pinned) {
+        pin.innerText = " Unpin";
+      } else {
+        pin.innerText = " Pin";
+      }
 			this.toggleMenuOn();
 			this.positionMenu(e);
 		} else {
@@ -895,6 +902,9 @@ var session = {
 					});
 				}
 				else {
+          if (tab.favIconUrl === undefined) {
+            tab.favIconUrl = "chrome://branding/content/icon32.png";
+          }
 					img.setAttribute('src', tab.favIconUrl);
 				}
 				img.setAttribute('width', display["double_line"]?'32':'16');
@@ -1000,7 +1010,12 @@ var session = {
 
 				if (buttons["pin"]) {
 					let pin = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+
+          if (tab.pinned) 
+  					src = browser.runtime.getURL("popup/img/favicon-16x16-pinned.png");
+          else 
+  					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+
 					pin.setAttribute('src', src);
 					pin.setAttribute('width', '16');
 					pin.setAttribute('height', '16');
