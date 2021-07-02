@@ -620,7 +620,9 @@ var keyboard = {
 
 			case 112: // p
 			case 80: // P
-				keyboard.pinKey();
+        // This should check if the character is P or not, because F1 == 112, which is interesting enough for some keyboard layout
+        if (e.key == "p" || e.key == "P")
+				  keyboard.pinKey();
 				break;
 
       case 49:
