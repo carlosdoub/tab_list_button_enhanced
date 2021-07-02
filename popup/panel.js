@@ -275,6 +275,13 @@ var context_menu = {
 		let id = this.getId(e.target.id);
 		tempId = null;
 		e.preventDefault();
+
+    document.getElementById("tabs").style.minHeight = "200px";
+
+    if (indexes.length < 5) {
+		  document.body.style.overflowY = "hidden";
+    }
+
 		if (id) {
 			tempId = id;
       let t = await browser.tabs.get(parseInt(id)); 
@@ -363,6 +370,8 @@ var context_menu = {
 		  menuState = 0;
 		  menu.classList.remove( contextMenuActive );
 		}
+
+    document.getElementById("tabs").style.minHeight = null;
 	},
 
   /**
@@ -763,7 +772,9 @@ var mouse = {
 	},
 
 	showScrollBar: function() {
-		document.body.style.overflowY = "scroll";
+    if (indexes.length > 5) {
+		  document.body.style.overflowY = "scroll";
+    }
 	}
 }
 
@@ -904,7 +915,7 @@ var session = {
 					});
 				}
 				else {
-          if (tab.favIconUrl === undefined) {
+          if (tab.favIconUrl === undefined || tab.favIconUrl.indexOf("mozapps") >= 0) {
             tab.favIconUrl = "chrome://branding/content/icon32.png";
           }
 					img.setAttribute('src', tab.favIconUrl);
