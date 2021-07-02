@@ -271,14 +271,21 @@ var context_menu = {
 		}
 	},
 
-	right_click_menu: function(e) {
+	right_click_menu: async function(e) {
 		let id = this.getId(e.target.id);
 		tempId = null;
 		e.preventDefault();
-		
 		if (id) {
 			tempId = id;
+      let t = await browser.tabs.get(parseInt(id)); 
 
+      pin = document.querySelector("#context-menu span[data-action=pin]");
+      // When pinned, change the context menu
+      if (t.pinned) {
+        pin.innerText = " Unpin";
+      } else {
+        pin.innerText = " Pin";
+      }
 			this.toggleMenuOn();
 			this.positionMenu(e);
 		} else {
@@ -498,10 +505,14 @@ var keyboard = {
 
 		misc.checkLoadingTab(id)
 		.then((tabInfo) => {
-			if (tabInfo.url != "about:addons")
-				icon.src = tabInfo.favIconUrl?tabInfo.favIconUrl:"";
-			else
-				icon.src = "";
+            if (tabInfo.url == "about:addons") {
+                icon.src = "";
+            } else if (tabInfo.favIconUrl === undefined) {                
+                icon.src = "chrome://branding/content/icon32.png";
+            } else {
+                icon.src = tabInfo.favIconUrl;
+            }
+            
 			misc.setItemInfo(id, tabInfo.title);
 			misc.setInfoToTitle(id);
 		});
@@ -608,12 +619,15 @@ var keyboard = {
 
 			case 98: // b
 			case 66: // B
-				keyboard.bookmarkKey();
+                if (e.key == "b" || e.key == "B")
+                    keyboard.bookmarkKey();
 				break;
 
 			case 112: // p
 			case 80: // P
-				keyboard.pinKey();
+        // This should check if the character is P or not, because F1 == 112, which is interesting enough for some keyboard layout
+        if (e.key == "p" || e.key == "P")
+				  keyboard.pinKey();
 				break;
 
       case 49:
@@ -708,10 +722,14 @@ var mouse = {
 
 		misc.checkLoadingTab(id)
 		.then((tabInfo) => {			
-			if (tabInfo.url != "about:addons")
-				icon.src = tabInfo.favIconUrl?tabInfo.favIconUrl:"";
-			else
-				icon.src = "";						
+            if (tabInfo.url == "about:addons") {
+                icon.src = "";
+            } else if (tabInfo.favIconUrl === undefined) {                
+                icon.src = "chrome://branding/content/icon32.png";
+            } else {
+                icon.src = tabInfo.favIconUrl;
+            }
+
 			misc.setItemInfo(id, tabInfo.title);
 			misc.setInfoToTitle(id);
 		});
@@ -885,16 +903,23 @@ var session = {
 
 					misc.checkLoadingTab(tab.id)
 					.then((tabInfo) => {
-						if (tabInfo.url != "about:addons")
-							img.src = tabInfo.favIconUrl?tabInfo.favIconUrl:"";
-						else
-							img.src = "";
+						if (tabInfo.url == "about:addons") {
+                            img.src = "";
+                        } else if (tabInfo.favIconUrl === undefined) { 
+                            img.src = "chrome://branding/content/icon32.png";
+                        } else {
+                            img.src = tabInfo.favIconUrl;
+                        }                        
+							
 						img.title = tabInfo.title;
 						span.innerText = tabInfo.title;
 						span.title = tabInfo.title;
 					});
 				}
 				else {
+          if (tab.favIconUrl === undefined) {
+            tab.favIconUrl = "chrome://branding/content/icon32.png";
+          }
 					img.setAttribute('src', tab.favIconUrl);
 				}
 				img.setAttribute('width', display["double_line"]?'32':'16');
@@ -1000,7 +1025,12 @@ var session = {
 
 				if (buttons["pin"]) {
 					let pin = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+
+          if (tab.pinned) 
+  					src = browser.runtime.getURL("popup/img/favicon-16x16-pinned.png");
+          else 
+  					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+
 					pin.setAttribute('src', src);
 					pin.setAttribute('width', '16');
 					pin.setAttribute('height', '16');
