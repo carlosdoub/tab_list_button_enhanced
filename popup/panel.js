@@ -278,10 +278,6 @@ var context_menu = {
 
     document.getElementById("tabs").style.minHeight = "200px";
 
-    if (indexes.length < 5) {
-		  document.body.style.overflowY = "hidden";
-    }
-
 		if (id) {
 			tempId = id;
       let t = await browser.tabs.get(parseInt(id)); 
@@ -772,7 +768,7 @@ var mouse = {
 	},
 
 	showScrollBar: function() {
-    if (indexes.length > 5) {
+    if (Object.keys(indexes).length > 5) {
 		  document.body.style.overflowY = "scroll";
     }
 	}
@@ -1024,15 +1020,18 @@ var session = {
 				if (buttons["pin"]) {
 					let pin = document.createElement('img');
 
-          if (tab.pinned) 
+          if (tab.pinned) {
   					src = browser.runtime.getURL("popup/img/favicon-16x16-pinned.png");
-          else 
+					  pin.setAttribute('title', "Unpin");
+          }
+          else {
   					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+					  pin.setAttribute('title', "Pin");
+          }
 
 					pin.setAttribute('src', src);
 					pin.setAttribute('width', '16');
 					pin.setAttribute('height', '16');
-					pin.setAttribute('title', "Pin");
 					pin.classList.add('ctrl');
 					pin.addEventListener('click', function() {
 						mouse.pinTabClick(tab.id);
