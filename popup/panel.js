@@ -162,13 +162,13 @@ var misc = {
 		old_node = new_node;
 	},
 
-	setItemInfo: function(id, info) {
+	setItemInfo: function(id, text, tabInfo) {
 		var icon = document.getElementById("icon_"+id);
 		var span = document.getElementById("span_"+id);
 
-		icon.title = info;
-		span.innerText = info;
-		span.title = info;
+		icon.title = `${tabInfo.title}\r\n${tabInfo.url}`;
+		span.innerText = text;
+		span.title = `${tabInfo.title}\r\n${tabInfo.url}`;
 	},
 
 	setInfoToUrl: function(id) {
@@ -507,13 +507,14 @@ var keyboard = {
 		.then((tabInfo) => {
             if (tabInfo.url == "about:addons") {
                 icon.src = "";
-            } else if (tabInfo.favIconUrl === undefined) {                
+            } else if (tabInfo.favIconUrl === undefined ||
+				tabInfo.favIconUrl.indexOf("mozapps") >= 0) {                
                 icon.src = "chrome://branding/content/icon32.png";
             } else {
                 icon.src = tabInfo.favIconUrl;
             }
             
-			misc.setItemInfo(id, tabInfo.title);
+			misc.setItemInfo(id, tabInfo.title, tabInfo);
 			misc.setInfoToTitle(id);
 		});
 	},
@@ -523,7 +524,7 @@ var keyboard = {
 
 		misc.getTabInfo(id)
 		.then((tabInfo) => {
-			misc.setItemInfo(id, tabInfo.url);
+			misc.setItemInfo(id, tabInfo.url, tabInfo);
 			misc.setInfoToUrl(id);
 		});
 	},
@@ -533,7 +534,7 @@ var keyboard = {
 
 		misc.getTabInfo(id)
 		.then((tabInfo) => {
-			misc.setItemInfo(id, tabInfo.title);
+			misc.setItemInfo(id, tabInfo.title, tabInfo);
 			misc.setInfoToTitle(id);
 		});
 	},
@@ -703,10 +704,10 @@ var mouse = {
 		misc.getTabInfo(id)
 		.then((tabInfo) => {
 			if (infoUrl[id] === true) {
-				misc.setItemInfo(id, tabInfo.title);
+				misc.setItemInfo(id, tabInfo.title, tabInfo);
 				misc.setInfoToTitle(id);
 			} else {
-				misc.setItemInfo(id, tabInfo.url);
+				misc.setItemInfo(id, tabInfo.url, tabInfo);
 				misc.setInfoToUrl(id);
 			}
 		});
@@ -724,13 +725,14 @@ var mouse = {
 		.then((tabInfo) => {			
             if (tabInfo.url == "about:addons") {
                 icon.src = "";
-            } else if (tabInfo.favIconUrl === undefined) {                
+            } else if (tabInfo.favIconUrl === undefined || 
+				tabInfo.favIconUrl.indexOf("mozapps") >= 0) {                
                 icon.src = "chrome://branding/content/icon32.png";
             } else {
                 icon.src = tabInfo.favIconUrl;
             }
 
-			misc.setItemInfo(id, tabInfo.title);
+			misc.setItemInfo(id, tabInfo.title, tabInfo);
 			misc.setInfoToTitle(id);
 		});
 	},
@@ -905,26 +907,25 @@ var session = {
 					.then((tabInfo) => {
 						if (tabInfo.url == "about:addons") {
                             img.src = "";
-                        } else if (tabInfo.favIconUrl === undefined) { 
+                        } else if (tabInfo.favIconUrl === undefined || tabInfo.favIconUrl.indexOf("mozapps") >= 0) { 
                             img.src = "chrome://branding/content/icon32.png";
                         } else {
                             img.src = tabInfo.favIconUrl;
                         }                        
 							
-						img.title = tabInfo.title;
-						span.innerText = tabInfo.title;
-						span.title = tabInfo.title;
+						img.title = `${tabInfo.title}\r\n${tabInfo.url}`;
 					});
 				}
 				else {
-          if (tab.favIconUrl === undefined) {
+          if (tab.favIconUrl === undefined || tab.favIconUrl.indexOf("mozapps") >= 0) {
             tab.favIconUrl = "chrome://branding/content/icon32.png";
           }
 					img.setAttribute('src', tab.favIconUrl);
 				}
+
 				img.setAttribute('width', display["double_line"]?'32':'16');
 				img.setAttribute('height', display["double_line"]?'32':'16');
-				img.setAttribute('title', tab.title);
+				img.setAttribute('title', `${tab.title}\r\n${tab.url}`);
 				img.classList.add('favicon');
 				img.addEventListener('click', function() {
 					mouse.setItemClick(tab);
@@ -967,7 +968,7 @@ var session = {
 					let span = document.createElement('div');
 					span.setAttribute('id', "span_"+tab.id);
 					span.innerText = tab.title;
-					span.setAttribute('title', tab.title);					
+					span.setAttribute('title', `${tab.title}\r\n${tab.url}`);					
 	
 					let url = document.createElement('div');
 					url.setAttribute('id', "url_"+tab.id);
@@ -987,7 +988,7 @@ var session = {
 					let span = document.createElement('span');
 					span.setAttribute('id', "span_"+tab.id);
 					span.innerText = tab.title;
-					span.setAttribute('title', tab.title);
+					span.setAttribute('title', `${tab.title}\r\n${tab.url}`);
 					span.classList.add('item');
 					span.addEventListener('click', function() {
 						mouse.setItemClick(tab);
