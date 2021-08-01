@@ -998,11 +998,11 @@ var session = {
 
 				if (buttons["remove"]) {
 					let remove = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/b_drop.png");
+					let src = browser.runtime.getURL("popup/img/close-line.png");
 					remove.setAttribute('src', src);
 					remove.setAttribute('width', '16');
 					remove.setAttribute('height', '16');
-					remove.setAttribute('title', "Remove");
+					remove.setAttribute('title', "Close");
 					remove.classList.add('ctrl');
 					remove.addEventListener('click', function() {
 						mouse.setRemoveClick(tab.id);
@@ -1012,7 +1012,7 @@ var session = {
 
 				if (buttons["reload"]) {
 					let reload = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/s_reload.png");
+					src = browser.runtime.getURL("popup/img/refresh-line.png");
 					reload.setAttribute('src', src);
 					reload.setAttribute('width', '16');
 					reload.setAttribute('height', '16');
@@ -1027,10 +1027,10 @@ var session = {
 				if (buttons["pin"]) {
 					let pin = document.createElement('img');
 
-          if (tab.pinned) 
-  					src = browser.runtime.getURL("popup/img/favicon-16x16-pinned.png");
-          else 
-  					src = browser.runtime.getURL("popup/img/favicon-16x16.png");
+					if (tab.pinned) 
+						src = browser.runtime.getURL("popup/img/pushpin-2-line.png");
+					else 
+						src = browser.runtime.getURL("popup/img/pushpin-line.png");
 
 					pin.setAttribute('src', src);
 					pin.setAttribute('width', '16');
@@ -1045,7 +1045,7 @@ var session = {
 
 				if (buttons["bookmark"]) {
 					let bookmark = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/b_bookmark.png");
+					src = browser.runtime.getURL("popup/img/bookmark-line.png");
 					bookmark.setAttribute('src', src);
 					bookmark.setAttribute('width', '16');
 					bookmark.setAttribute('height', '16');
@@ -1059,7 +1059,7 @@ var session = {
 
 				if (buttons["viewurl"]) {
 					let info = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/s_info.png");
+					src = browser.runtime.getURL("popup/img/information-line.png");
 					info.setAttribute('src', src);
 					info.setAttribute('width', '16');
 					info.setAttribute('height', '16');
