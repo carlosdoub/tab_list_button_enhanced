@@ -43,7 +43,7 @@ img.favicon, img.audible {
     font-size: 1em;
     cursor: pointer;
 
-    width:280px;
+    width:250px;
     overflow-x:hidden;
     text-overflow: ellipsis;
     white-space:nowrap;

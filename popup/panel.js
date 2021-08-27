@@ -49,16 +49,11 @@ async function loadDisplayOptions() {
 			bordercolor: "#FF0000",
 			containercolor: false,
 			containercolorall: false,
+			onlypinned: false
 		}
 		await browser.storage.local.set({display});
 		loadDisplayOptions();
 	} else {					
-		if (typeof display["containercolorall"] === 'undefined') {
-			display["containercolorall"] = false;
-			await browser.storage.local.set({display});
-			loadDisplayOptions();
-		} else {
-		}
 	}
 }
 
@@ -879,6 +874,9 @@ var session = {
 			
 			session.first = true;
 			for (let tab of tabs) {
+				if (display["onlypinned"] && !tab.pinned)
+					continue;
+
 				session.setIndexes(tab);
 
 				let div = document.createElement('div');

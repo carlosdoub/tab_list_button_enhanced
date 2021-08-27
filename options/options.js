@@ -57,7 +57,8 @@ async function setDisplayOption() {
 		unloaded: document.querySelector('#unloaded').checked,
 		bordercolor: document.querySelector('#bordercolor').value,
 		containercolor: document.querySelector('#containercolor').checked,
-		containercolorall: document.querySelector('#containercolorall').checked
+		containercolorall: document.querySelector('#containercolorall').checked,
+		onlypinned: document.querySelector('#onlypinned').checked
 	};
 	await browser.storage.local.set({display});
 }
@@ -135,7 +136,8 @@ async function populateDisplay() {
 			unloaded: true,
 			bordercolor: "#FF0000",
 			containercolor: false,
-			containercolorall: false
+			containercolorall: false,
+			onlypinned: false
 		}
 		await browser.storage.local.set({display});
 		populateDisplay();
@@ -275,6 +277,7 @@ document.querySelector('#active-border').addEventListener('change', function(){
 	setDisplayOption();
 	toggleActiveBorder();
 })
+document.querySelector('#onlypinned').addEventListener('change', setDisplayOption)
 
 /**
  * Buttons options
