@@ -572,6 +572,22 @@ var keyboard = {
 		window.close();
 	},
 
+	muteKey: async function() {
+		let id = old_node.id;
+		let {display} = 
+				await browser.storage.local.get(["display"]);
+
+		misc.getTabInfo(id)
+		.then((tabInfo) => {
+			if(tabInfo.audible && !tabInfo.mutedInfo.muted) {
+				mouse.setAudibleClick(tabInfo, display["double_line"]);
+			} else if(tabInfo.mutedInfo.muted) {
+				mouse.setMutedClick(tabInfo, display["double_line"]);
+			}
+		});
+	},
+
+
 	keyboard_navigation: function(e) {
 		keyboard.hideScrollBar();
 
@@ -624,6 +640,11 @@ var keyboard = {
         // This should check if the character is P or not, because F1 == 112, which is interesting enough for some keyboard layout
         if (e.key == "p" || e.key == "P")
 				  keyboard.pinKey();
+				break;
+
+			case 109: // m
+			case 77: // M
+				keyboard.muteKey();
 				break;
 
       case 49:
