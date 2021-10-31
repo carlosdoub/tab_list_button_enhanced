@@ -49,7 +49,8 @@ async function loadDisplayOptions() {
 			bordercolor: "#FF0000",
 			containercolor: false,
 			containercolorall: false,
-			onlypinned: false
+			onlypinned: false,
+			panelwidth: 250
 		}
 		await browser.storage.local.set({display});
 		loadDisplayOptions();
@@ -1002,6 +1003,7 @@ var session = {
 					item.addEventListener('click', function() {
 						mouse.setItemClick(tab);
 					});
+					item.style.width = display['panelwidth']+'px';
 					div.appendChild(item);
 				} else {
 					let span = document.createElement('span');
@@ -1012,6 +1014,7 @@ var session = {
 					span.addEventListener('click', function() {
 						mouse.setItemClick(tab);
 					});
+					span.style.width = display['panelwidth']+'px';
 					div.appendChild(span);
 				}
 

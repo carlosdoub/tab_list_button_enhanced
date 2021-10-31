@@ -51,6 +51,14 @@ function toggleActiveBorder() {
 }
 
 async function setDisplayOption() {
+	let panel;
+	if (document.querySelector('#panel-width').value > 600)
+		panel = 600;
+	else if (document.querySelector('#panel-width').value < 200)
+		panel = 200;
+	else
+		panel = document.querySelector('#panel-width').value;
+
 	let display = {
 		tabindex: document.querySelector('#tabindex').checked,
 		double_line: document.querySelector('#double-line').checked,
@@ -58,7 +66,8 @@ async function setDisplayOption() {
 		bordercolor: document.querySelector('#bordercolor').value,
 		containercolor: document.querySelector('#containercolor').checked,
 		containercolorall: document.querySelector('#containercolorall').checked,
-		onlypinned: document.querySelector('#onlypinned').checked
+		onlypinned: document.querySelector('#onlypinned').checked,
+		panelwidth: panel 
 	};
 	await browser.storage.local.set({display});
 }
@@ -137,7 +146,8 @@ async function populateDisplay() {
 			bordercolor: "#FF0000",
 			containercolor: false,
 			containercolorall: false,
-			onlypinned: false
+			onlypinned: false,
+			panelwidth: 250
 		}
 		await browser.storage.local.set({display});
 		populateDisplay();
@@ -147,6 +157,7 @@ async function populateDisplay() {
 		document.querySelector('#unloaded').checked = display["unloaded"];		
 		document.querySelector('#bordercolor').value = display["bordercolor"];	
 		document.querySelector('#containercolor').checked = display["containercolor"];			
+		document.querySelector('#panel-width').value = display["panelwidth"];	
 
 		if (display["containercolorall"]) {
 			document.querySelector('#containercolorall').checked = true;
@@ -278,6 +289,7 @@ document.querySelector('#active-border').addEventListener('change', function(){
 	toggleActiveBorder();
 })
 document.querySelector('#onlypinned').addEventListener('change', setDisplayOption)
+document.querySelector('#panel-width').addEventListener('change', setDisplayOption)
 
 /**
  * Buttons options
