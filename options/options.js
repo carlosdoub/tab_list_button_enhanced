@@ -180,7 +180,7 @@ async function populateButtons() {
 			remove: true
 		}
 		await browser.storage.local.set({buttons});
-		populateOptions();
+		populateButtons();
 	} else {
 		document.querySelector('#bookmark').checked = buttons["bookmark"];
 		document.querySelector('#viewurl').checked = buttons["viewurl"];
