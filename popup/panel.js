@@ -937,9 +937,9 @@ var session = {
 					});
 				}
 				else {
-          if (tab.favIconUrl === undefined || tab.favIconUrl.indexOf("mozapps") >= 0) {
-            tab.favIconUrl = "chrome://branding/content/icon32.png";
-          }
+					if (tab.favIconUrl === undefined || tab.favIconUrl.indexOf("mozapps") >= 0) {
+						tab.favIconUrl = "chrome://branding/content/icon32.png";
+					}
 					img.setAttribute('src', tab.favIconUrl);
 				}
 
