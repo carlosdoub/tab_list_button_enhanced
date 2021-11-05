@@ -157,7 +157,7 @@ async function populateDisplay() {
 		document.querySelector('#unloaded').checked = display["unloaded"];		
 		document.querySelector('#bordercolor').value = display["bordercolor"];	
 		document.querySelector('#containercolor').checked = display["containercolor"];			
-		document.querySelector('#panel-width').value = display["panelwidth"] || 250;	
+		document.querySelector('#panel-width').value = display["panelwidth"] || 250; // Hotfix	
 
 		if (display["containercolorall"]) {
 			document.querySelector('#containercolorall').checked = true;
