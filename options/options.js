@@ -1,3 +1,5 @@
+'use strict';
+
 const commandName = '_execute_browser_action';
 
 /**

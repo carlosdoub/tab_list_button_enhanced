@@ -1,3 +1,4 @@
+'use strict';
 
 async function loadIcon() {
 	let {icon} = await browser.storage.local.get("icon");

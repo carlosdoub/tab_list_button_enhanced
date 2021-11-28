@@ -1,3 +1,4 @@
+'use strict';
 
 var new_node, old_node;
 var indexes = {};
@@ -1048,7 +1049,7 @@ var session = {
 
 				if (buttons["reload"]) {
 					let reload = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/refresh-line.png");
+					let src = browser.runtime.getURL("popup/img/refresh-line.png");
 					reload.setAttribute('src', src);
 					reload.setAttribute('width', '16');
 					reload.setAttribute('height', '16');
@@ -1063,6 +1064,7 @@ var session = {
 				if (buttons["pin"]) {
 					let pin = document.createElement('img');
 
+                    let src = '';
 					if (tab.pinned) 
 						src = browser.runtime.getURL("popup/img/pushpin-2-line.png");
 					else 
@@ -1081,7 +1083,7 @@ var session = {
 
 				if (buttons["bookmark"]) {
 					let bookmark = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/bookmark-line.png");
+					let src = browser.runtime.getURL("popup/img/bookmark-line.png");
 					bookmark.setAttribute('src', src);
 					bookmark.setAttribute('width', '16');
 					bookmark.setAttribute('height', '16');
@@ -1095,7 +1097,7 @@ var session = {
 
 				if (buttons["viewurl"]) {
 					let info = document.createElement('img');
-					src = browser.runtime.getURL("popup/img/information-line.png");
+					let src = browser.runtime.getURL("popup/img/information-line.png");
 					info.setAttribute('src', src);
 					info.setAttribute('width', '16');
 					info.setAttribute('height', '16');
@@ -1153,6 +1155,7 @@ var session = {
 
 document.addEventListener('DOMContentLoaded', session.load_session);
 
+// Make sure the options exist
 loadDisplayOptions();
 loadButtonsOptions();
 loadScrollbarOptions();
