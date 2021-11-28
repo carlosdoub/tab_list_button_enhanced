@@ -7,7 +7,7 @@ const commandName = '_execute_browser_action';
  */
 async function updateUI() {
   let commands = await browser.commands.getAll();
-  for (command of commands) {
+  for (let command of commands) {
     if (command.name === commandName) {
       document.querySelector('#shortcut').value = command.shortcut;
     }
