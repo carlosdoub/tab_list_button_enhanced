@@ -41,57 +41,71 @@ var windowHeight;
 async function loadDisplayOptions() {
 	let {display} = await browser.storage.local.get("display");
 
-	if (typeof display === 'undefined') {
-		let display = {
-			tabindex: false,
-			double_line: false,
-			unloaded: true,
-			bordercolor: "#FF0000",
-			containercolor: false,
-			containercolorall: false,
-			onlypinned: false,
-			panelwidth: 250
-		}
-		await browser.storage.local.set({display});
-		loadDisplayOptions();
-	} else {					
-	}
+	if (typeof display === 'undefined')
+		display = {};
+
+	if (!('tabindex' in display))
+		display.tabindex = false;
+
+	if (!('double_line' in display))
+		display.double_line = false;
+
+	if (!('unloaded' in display))
+		display.unloaded = true;
+
+	if (!('bordercolor' in display))
+		display.bordercolor = "#FF0000";
+
+	if (!('containercolor' in display))
+		display.containercolor = false;
+	
+	if (!('containercolorall' in display))
+		display.containercolorall = false;
+
+	if (!('onlypinned' in display))
+		display.onlypinned = false;
+
+	if (!('panelwidth' in display))
+		display.panelwidth = 250;
+
+	await browser.storage.local.set({display});
 }
 
 async function loadButtonsOptions() {
 	let {buttons} = await browser.storage.local.get("buttons");
-	if (typeof buttons === 'undefined') {
-		let buttons = {			
-			pin: false,
-			bookmark: false,
-			viewurl: true,
-			reload: true,
-			remove: true
-		}
-		await browser.storage.local.set({buttons});
-		loadButtonsOptions();
-	} else {					
-	}
+
+	if (typeof buttons === 'undefined')
+		buttons = {};
+	if (!('pin' in buttons))
+		buttons.pin = false;
+	if (!('bookmark' in buttons))
+		buttons.bookmark = false;
+	if (!('viewurl' in buttons)) 
+		buttons.viewurl = true;
+	if (!('reload' in buttons))
+		buttons.reload = true;
+	if (!('remove' in buttons)) 
+		buttons.remove = true;
+
+	await browser.storage.local.set({buttons});
 }
 
 async function loadScrollbarOptions() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined') {
-		let scrollbar = {
-			mouse: false,
-			keyboard: true,
-			activetab: true
-		};
-		await browser.storage.local.set({scrollbar});
-		loadScrollbarOptions();
-	} else {		
-		if (typeof scrollbar["activetab"] === 'undefined') {
-			scrollbar["activetab"] = true;
-			await browser.storage.local.set({scrollbar});
-			loadScrollbarOptions();
-		} else {
-		}
-	}
+
+	if (typeof scrollbar === 'undefined')
+		scrollbar = {};
+
+	if (!('mouse' in scrollbar))
+		scrollbar.mouse = false;
+
+	if (!('keyboard' in scrollbar))
+		scrollbar.keyboard = true;
+
+	if (!('activetab' in scrollbar))
+		scrollbar.activetab = true;
+
+	await browser.storage.local.set({scrollbar});
 }
 
 

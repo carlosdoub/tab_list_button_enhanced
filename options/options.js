@@ -138,124 +138,158 @@ async function setScrollbarOption() {
 async function populateDisplay() {
 	let {display} = await browser.storage.local.get("display");
 
-	if (typeof display === 'undefined') {
-		let display = {
-			tabindex: false,
-			double_line: false,
-			unloaded: true,
-			bordercolor: "#FF0000",
-			containercolor: false,
-			containercolorall: false,
-			onlypinned: false,
-			panelwidth: 250
-		}
-		await browser.storage.local.set({display});
-		populateDisplay();
-	} else {		
-		document.querySelector('#tabindex').checked = display["tabindex"];
-		document.querySelector('#double-line').checked = display["double_line"];		
-		document.querySelector('#unloaded').checked = display["unloaded"];		
-		document.querySelector('#bordercolor').value = display["bordercolor"];	
-		document.querySelector('#containercolor').checked = display["containercolor"];			
-		document.querySelector('#panel-width').value = display["panelwidth"] || 250; // Hotfix	
+	if (typeof display === 'undefined')
+		display = {};
 
-		if (display["containercolorall"]) {
-			document.querySelector('#containercolorall').checked = true;
-			document.querySelector("#active-border-options").style.display = "none";
-		} else {
-			document.querySelector("#active-border").checked = true;
-			document.querySelector("#active-border-options").style.display = "block";
-		}
+	if (!('tabindex' in display))
+		display.tabindex = false;
+
+	if (!('double_line' in display))
+		display.double_line = false;
+
+	if (!('unloaded' in display))
+		display.unloaded = true;
+
+	if (!('bordercolor' in display))
+		display.bordercolor = "#FF0000";
+
+	if (!('containercolor' in display))
+		display.containercolor = false;
+	
+	if (!('containercolorall' in display))
+		display.containercolorall = false;
+
+	if (!('onlypinned' in display))
+		display.onlypinned = false;
+
+	if (!('panelwidth' in display))
+		display.panelwidth = 250;
+
+	await browser.storage.local.set({display});
+
+	document.querySelector('#tabindex').checked = display["tabindex"];
+	document.querySelector('#double-line').checked = display["double_line"];		
+	document.querySelector('#unloaded').checked = display["unloaded"];		
+	document.querySelector('#bordercolor').value = display["bordercolor"];	
+	document.querySelector('#containercolor').checked = display["containercolor"];			
+	document.querySelector('#panel-width').value = display["panelwidth"];
+
+	if (display["containercolorall"]) {
+		document.querySelector('#containercolorall').checked = true;
+		document.querySelector("#active-border-options").style.display = "none";
+	} else {
+		document.querySelector("#active-border").checked = true;
+		document.querySelector("#active-border-options").style.display = "block";
 	}
+
 }
 
 async function populateButtons() {
 	let {buttons} = await browser.storage.local.get("buttons");
-	if (typeof buttons === 'undefined') {
-		let buttons = {			
-			pin: false,
-			bookmark: false,
-			viewurl: true,
-			reload: true,
-			remove: true
-		}
-		await browser.storage.local.set({buttons});
-		populateButtons();
-	} else {
-		document.querySelector('#bookmark').checked = buttons["bookmark"];
-		document.querySelector('#viewurl').checked = buttons["viewurl"];
-		document.querySelector('#pin').checked = buttons["pin"];
-		document.querySelector('#reload').checked = buttons["reload"];
-		document.querySelector('#remove').checked = buttons["remove"];		
-	}
+	
+	if (typeof buttons === 'undefined')
+		buttons = {};
+	if (!('pin' in buttons))
+		buttons.pin = false;
+	if (!('bookmark' in buttons))
+		buttons.bookmark = false;
+	if (!('viewurl' in buttons)) 
+		buttons.viewurl = true;
+	if (!('reload' in buttons))
+		buttons.reload = true;
+	if (!('remove' in buttons)) 
+		buttons.remove = true;
+
+	await browser.storage.local.set({buttons});
+
+	document.querySelector('#bookmark').checked = buttons["bookmark"];
+	document.querySelector('#viewurl').checked = buttons["viewurl"];
+	document.querySelector('#pin').checked = buttons["pin"];
+	document.querySelector('#reload').checked = buttons["reload"];
+	document.querySelector('#remove').checked = buttons["remove"];		
+
 }
 
 async function populateColors() {
 	let {icon} = await browser.storage.local.get("icon");
-	if (typeof icon === 'undefined') {
-		let icon = {
-			orange: true,
-			green: false,
-			purple: false,
-			grey: false,
-			orange_tabs: false,
-			green_tabs: false,
-			purple_tabs: false,
-			grey_tabs: false
-		};
-		await browser.storage.local.set({icon});
-		populateColors();
-	} else {
-		document.querySelector('#orange').checked = icon["orange"];
-		document.querySelector('#green').checked = icon["green"];		
-		document.querySelector('#purple').checked = icon["purple"];
-		document.querySelector('#grey').checked = icon["grey"];
-		document.querySelector('#orange_tabs').checked = icon["orange_tabs"];
-		document.querySelector('#green_tabs').checked = icon["green_tabs"];		
-		document.querySelector('#purple_tabs').checked = icon["purple_tabs"];
-		document.querySelector('#grey_tabs').checked = icon["grey_tabs"];
-	}
+
+	if (typeof icon === 'undefined')
+		icon = {};
+	if (!('orange' in icon))
+		icon.orange = true;
+	if (!('green' in icon))
+		icon.green = false;
+	if (!('purple' in icon))
+		icon.purple = false;
+	if (!('grey' in icon))
+		icon.grey = false;
+	if (!('orange_tabs' in icon))
+		icon.orange_tabs = false;
+	if (!('green_tabs' in icon))
+		icon.green_tabs = false;
+	if (!('purple_tabs' in icon))
+		icon.purple_tabs = false;
+	if (!('grey_tabs' in icon))
+		icon.grey_tabs = false;
+
+	await browser.storage.local.set({icon});
+
+	document.querySelector('#orange').checked = icon["orange"];
+	document.querySelector('#green').checked = icon["green"];		
+	document.querySelector('#purple').checked = icon["purple"];
+	document.querySelector('#grey').checked = icon["grey"];
+	document.querySelector('#orange_tabs').checked = icon["orange_tabs"];
+	document.querySelector('#green_tabs').checked = icon["green_tabs"];		
+	document.querySelector('#purple_tabs').checked = icon["purple_tabs"];
+	document.querySelector('#grey_tabs').checked = icon["grey_tabs"];
+
 }
 
 async function populateBadge() {
 	let {badge} = await browser.storage.local.get("badge");
-	if (typeof badge === 'undefined') {
-		let badge = {
-			display: true,
-			textColor: "#FFFFFF",
-			backgroundColor: "#FF7F27"
-		};
-		await browser.storage.local.set({badge});
-		populateBadge();
-	} else {
-		document.querySelector('#badge').checked = badge["display"];
-		document.querySelector('#textcolor').value = badge["textColor"];		
-		document.querySelector('#bgcolor').value = badge["backgroundColor"];		
-	}
+
+	if (typeof badge === 'undefined')
+		badge = {};
+
+	if (!('display' in badge))
+		badge.display = true;
+
+	if (!('textColor' in badge))
+		badge.textColor = "#FFFFFF";
+
+	if (!('backgroundColor' in badge))
+		badge.backgroundColor = "#FF7F27";
+
+	await browser.storage.local.set({badge});
+
+	document.querySelector('#badge').checked = badge["display"];
+	document.querySelector('#textcolor').value = badge["textColor"];		
+	document.querySelector('#bgcolor').value = badge["backgroundColor"];		
+
 }
 
 async function populateScrollbar() {
 	let {scrollbar} = await browser.storage.local.get("scrollbar");
-	if (typeof scrollbar === 'undefined') {
-		let scrollbar = {
-			mouse: false,
-			keyboard: true,
-			activetab: true
-		};
-		await browser.storage.local.set({scrollbar});
-		populateScrollbar();
-	} else {
-		if (typeof scrollbar["activetab"] === 'undefined') {
-			scrollbar["activetab"] = true;
-			await browser.storage.local.set({scrollbar});
-			populateScrollbar();
-		} else {
-			document.querySelector('#mouse').checked = scrollbar["mouse"];
-			document.querySelector('#keyboard').checked = scrollbar["keyboard"];		
-			document.querySelector('#active').checked = scrollbar["activetab"];		
-			document.querySelector('#top').checked = !scrollbar["activetab"];		
-		}
-	}
+
+	if (typeof scrollbar === 'undefined')
+		scrollbar = {};
+
+	if (!('mouse' in scrollbar))
+		scrollbar.mouse = false;
+
+	if (!('keyboard' in scrollbar))
+		scrollbar.keyboard = true;
+
+	if (!('activetab' in scrollbar))
+		scrollbar.activetab = true;
+
+	await browser.storage.local.set({scrollbar});
+
+	document.querySelector('#mouse').checked = scrollbar["mouse"];
+	document.querySelector('#keyboard').checked = scrollbar["keyboard"];		
+	document.querySelector('#active').checked = scrollbar["activetab"];		
+	document.querySelector('#top').checked = !scrollbar["activetab"];		
+
 }
 
 
