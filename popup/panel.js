@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 var new_node, old_node;
 var indexes = {};
