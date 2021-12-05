@@ -83,6 +83,8 @@ async function loadButtonsOptions() {
 		buttons.bookmark = false;
 	if (!('viewurl' in buttons)) 
 		buttons.viewurl = true;
+	if (!('discard' in buttons))
+		buttons.discard = true;
 	if (!('reload' in buttons))
 		buttons.reload = true;
 	if (!('remove' in buttons)) 
@@ -265,6 +267,9 @@ var context_menu = {
 				case "pin":	
 					mouse.pinTabClick(parseInt(tempId));
 					break;
+                case "discard":	
+					mouse.setDiscardClick(parseInt(tempId));
+					break;
 				case "reload":	
 					mouse.setReloadClick(parseInt(tempId));
 					break;
@@ -290,7 +295,7 @@ var context_menu = {
 			tempId = id;
       let t = await browser.tabs.get(parseInt(id)); 
 
-      pin = document.querySelector("#context-menu span[data-action=pin]");
+      let pin = document.querySelector("#context-menu span[data-action=pin]");
       // When pinned, change the context menu
       if (t.pinned) {
         pin.innerText = " Unpin";
@@ -603,6 +608,10 @@ var keyboard = {
 		});
 	},
 
+    discardKey: function() {
+        let id = old_node.id;
+        mouse.setDiscardClick(id);
+    },
 
 	keyboard_navigation: function(e) {
 		keyboard.hideScrollBar();
@@ -676,6 +685,11 @@ var keyboard = {
         keyboard.selectTab(tabNumber);
         break;
 
+        case 100: // d
+        case 68: // D
+            keyboard.discardKey();
+            break;
+
 			default: return; // exit this handler for other keys
 		}
 		e.preventDefault(); // prevent the default action (scroll / move caret)
@@ -689,6 +703,19 @@ var keyboard = {
 
 
 var mouse = {
+
+    setDiscardClick: function(id) {
+        if (!active[id]) {
+            var item = document.getElementById(id);
+            var discarding = browser.tabs.discard(parseInt(id));
+
+            discarding.then(function() {
+                item.classList.remove('enabled');
+                item.classList.add('disabled');
+            });
+            discarding.catch(function() {});
+        }
+    },
 
 	setMutedClick: async function(tab, double_line) {
 		var voice = document.getElementById("voice_"+tab.id);
@@ -1059,6 +1086,20 @@ var session = {
 						mouse.setReloadClick(tab.id);
 					});
 					div.append(reload);
+				}
+
+                if (buttons["discard"]) {
+					let discard = document.createElement('img');
+					let src = browser.runtime.getURL("popup/img/icons8-snowflake-16.png");
+					discard.setAttribute('src', src);
+					discard.setAttribute('width', '16');
+					discard.setAttribute('height', '16');
+					discard.setAttribute('title', "Discard");
+					discard.classList.add('ctrl');
+					discard.addEventListener('click', function() {
+						mouse.setDiscardClick(tab.id);
+					});
+					div.append(discard);
 				}
 
 				if (buttons["pin"]) {

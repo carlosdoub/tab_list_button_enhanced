@@ -79,6 +79,7 @@ async function setButtonOption() {
 		pin: document.querySelector('#pin').checked,
 		bookmark: document.querySelector('#bookmark').checked,
 		viewurl: document.querySelector('#viewurl').checked,
+		discard: document.querySelector('#discard').checked,
 		reload: document.querySelector('#reload').checked,
 		remove: document.querySelector('#remove').checked
 	};
@@ -197,6 +198,8 @@ async function populateButtons() {
 		buttons.bookmark = false;
 	if (!('viewurl' in buttons)) 
 		buttons.viewurl = true;
+	if (!('discard' in buttons))
+		buttons.discard = true;
 	if (!('reload' in buttons))
 		buttons.reload = true;
 	if (!('remove' in buttons)) 
@@ -207,6 +210,7 @@ async function populateButtons() {
 	document.querySelector('#bookmark').checked = buttons["bookmark"];
 	document.querySelector('#viewurl').checked = buttons["viewurl"];
 	document.querySelector('#pin').checked = buttons["pin"];
+	document.querySelector('#discard').checked = buttons["discard"];
 	document.querySelector('#reload').checked = buttons["reload"];
 	document.querySelector('#remove').checked = buttons["remove"];		
 
@@ -333,6 +337,7 @@ document.querySelector('#panel-width').addEventListener('change', setDisplayOpti
 document.querySelector('#bookmark').addEventListener('change', setButtonOption)
 document.querySelector('#pin').addEventListener('change', setButtonOption)
 document.querySelector('#viewurl').addEventListener('change', setButtonOption)
+document.querySelector('#discard').addEventListener('change', setButtonOption)
 document.querySelector('#reload').addEventListener('change', setButtonOption)
 document.querySelector('#remove').addEventListener('change', setButtonOption)
 
