@@ -72,6 +72,28 @@ async function loadDisplayOptions() {
 	await browser.storage.local.set({display});
 }
 
+// Buttons icons set file names
+const iconset = {
+    monotone: {
+        info: "information-line.png",
+        bookmark: "bookmark-line.png",
+        pinned: "pushpin-2-line.png",
+        unpinned: "pushpin-line.png",
+        discard: "icons8-snowflake-16.png",
+        reload: "refresh-line.png",
+        close: "close-line.png"
+    },
+    color: {
+        info: "s_info.png",
+        bookmark: "b_bookmark.png",
+        pinned: "favicon-16x16-pinned.png",
+        unpinned: "favicon-16x16.png",
+        discard: "icons8-snowflake-16(1).png",
+        reload: "s_reload.png",
+        close: "b_drop.png"
+    }
+}
+
 async function loadButtonsOptions() {
 	let {buttons} = await browser.storage.local.get("buttons");
 
@@ -89,6 +111,8 @@ async function loadButtonsOptions() {
 		buttons.reload = true;
 	if (!('remove' in buttons)) 
 		buttons.remove = true;
+    if (!('icontype' in buttons)) 
+        buttons.icontype = "monotone";
 
 	await browser.storage.local.set({buttons});
 }
@@ -1062,7 +1086,7 @@ var session = {
 
 				if (buttons["remove"]) {
 					let remove = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/close-line.png");
+					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].close}`);
 					remove.setAttribute('src', src);
 					remove.setAttribute('width', '16');
 					remove.setAttribute('height', '16');
@@ -1076,7 +1100,7 @@ var session = {
 
 				if (buttons["reload"]) {
 					let reload = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/refresh-line.png");
+					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].reload}`);
 					reload.setAttribute('src', src);
 					reload.setAttribute('width', '16');
 					reload.setAttribute('height', '16');
@@ -1090,7 +1114,7 @@ var session = {
 
                 if (buttons["discard"]) {
 					let discard = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/icons8-snowflake-16.png");
+					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].discard}`);
 					discard.setAttribute('src', src);
 					discard.setAttribute('width', '16');
 					discard.setAttribute('height', '16');
@@ -1107,9 +1131,9 @@ var session = {
 
                     let src = '';
 					if (tab.pinned) 
-						src = browser.runtime.getURL("popup/img/pushpin-2-line.png");
+						src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].pinned}`);
 					else 
-						src = browser.runtime.getURL("popup/img/pushpin-line.png");
+						src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].unpinned}`);
 
 					pin.setAttribute('src', src);
 					pin.setAttribute('width', '16');
@@ -1124,7 +1148,7 @@ var session = {
 
 				if (buttons["bookmark"]) {
 					let bookmark = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/bookmark-line.png");
+					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].bookmark}`);
 					bookmark.setAttribute('src', src);
 					bookmark.setAttribute('width', '16');
 					bookmark.setAttribute('height', '16');
@@ -1138,7 +1162,7 @@ var session = {
 
 				if (buttons["viewurl"]) {
 					let info = document.createElement('img');
-					let src = browser.runtime.getURL("popup/img/information-line.png");
+					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].info}`);
 					info.setAttribute('src', src);
 					info.setAttribute('width', '16');
 					info.setAttribute('height', '16');

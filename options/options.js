@@ -74,6 +74,28 @@ async function setDisplayOption() {
 	await browser.storage.local.set({display});
 }
 
+// Buttons icons set file names
+const iconset = {
+    monotone: {
+        info: "information-line.png",
+        bookmark: "bookmark-line.png",
+        pinned: "pushpin-2-line.png",
+        unpinned: "pushpin-line.png",
+        discard: "icons8-snowflake-16.png",
+        reload: "refresh-line.png",
+        close: "close-line.png"
+    },
+    color: {
+        info: "s_info.png",
+        bookmark: "b_bookmark.png",
+        pinned: "favicon-16x16-pinned.png",
+        unpinned: "favicon-16x16.png",
+        discard: "icons8-snowflake-16(1).png",
+        reload: "s_reload.png",
+        close: "b_drop.png"
+    }
+}
+
 async function setButtonOption() {
 	let buttons = {		
 		pin: document.querySelector('#pin').checked,
@@ -81,9 +103,13 @@ async function setButtonOption() {
 		viewurl: document.querySelector('#viewurl').checked,
 		discard: document.querySelector('#discard').checked,
 		reload: document.querySelector('#reload').checked,
-		remove: document.querySelector('#remove').checked
+		remove: document.querySelector('#remove').checked,
+        icontype: document.querySelector('[name="iconset"]:checked').value
 	};
 	await browser.storage.local.set({buttons});
+
+    // Run set icons function
+    setButtonIcons(buttons['icontype']);
 }
 
 async function setColorOption() {
@@ -136,6 +162,16 @@ async function setScrollbarOption() {
 		activetab: document.querySelector('#active').checked
 	};
 	await browser.storage.local.set({scrollbar});
+}
+
+// Custom function for displaing icon set
+function setButtonIcons(type) {
+    document.querySelector("#viewurl").nextElementSibling.src = `img/${iconset[type].info}`;
+    document.querySelector("#bookmark").nextElementSibling.src = `img/${iconset[type].bookmark}`;
+    document.querySelector("#pin").nextElementSibling.src = `img/${iconset[type].unpinned}`;
+    document.querySelector("#discard").nextElementSibling.src = `img/${iconset[type].discard}`;
+    document.querySelector("#reload").nextElementSibling.src = `img/${iconset[type].reload}`;
+    document.querySelector("#remove").nextElementSibling.src = `img/${iconset[type].close}`;
 }
 
 async function populateDisplay() {
@@ -204,6 +240,8 @@ async function populateButtons() {
 		buttons.reload = true;
 	if (!('remove' in buttons)) 
 		buttons.remove = true;
+    if (!('icontype' in buttons)) 
+        buttons.icontype = "monotone";
 
 	await browser.storage.local.set({buttons});
 
@@ -213,7 +251,13 @@ async function populateButtons() {
 	document.querySelector('#discard').checked = buttons["discard"];
 	document.querySelector('#reload').checked = buttons["reload"];
 	document.querySelector('#remove').checked = buttons["remove"];		
-
+    if (buttons["icontype"] == "monotone")
+	    document.querySelector('#mono-icons').checked = true;		
+    else if (buttons["icontype"] == "color")
+	    document.querySelector('#color-icons').checked = true;		
+    
+    // Run set icons function
+    setButtonIcons(buttons["icontype"]);
 }
 
 async function populateColors() {
@@ -340,6 +384,8 @@ document.querySelector('#viewurl').addEventListener('change', setButtonOption)
 document.querySelector('#discard').addEventListener('change', setButtonOption)
 document.querySelector('#reload').addEventListener('change', setButtonOption)
 document.querySelector('#remove').addEventListener('change', setButtonOption)
+document.querySelector('#mono-icons').addEventListener('change', setButtonOption)
+document.querySelector('#color-icons').addEventListener('change', setButtonOption)
 
 /**
  * Colors options
