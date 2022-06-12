@@ -32,7 +32,7 @@
         "contextualIdentities",
         "cookies"        
     ],
-    "version": "2.18.1",
+    "version": "2.19.1",
 
 	"background": {"scripts": ["background.js"]},
 
