@@ -1,6 +1,6 @@
 //'use strict';
 
-var new_node, old_node;
+// var new_node, old_node;
 var indexes = {};
 var ids = {};
 var active = {};
@@ -149,10 +149,15 @@ var misc = {
 		let tabs = await browser.tabs.query(query);
 
 		for (let tab of tabs) {
-			indexes[tab.id] = tab.index;
-			ids[tab.index] = tab.id;
-			active[tab.id] = tab.active;
-			pinned[tab.id] = tab.pinned;
+            item = document.getElementById(tab.id)
+
+            if (item.style.display == 'block' &&
+                item.dataset.enabled == 'yes') {
+                indexes[tab.id] = tab.index;
+                ids[tab.index] = tab.id;
+                active[tab.id] = tab.active;
+                pinned[tab.id] = tab.pinned;
+            }
 		}
 	},
 
@@ -193,11 +198,11 @@ var misc = {
 		return p;
 	},
 
-	nodeToggle: function() {
+	/* nodeToggle: function() {
 		old_node.classList.remove("hover");
 		new_node.classList.add("hover");
 		old_node = new_node;
-	},
+	}, */
 
 	setItemInfo: function(id, text, tabInfo) {
 		var icon = document.getElementById("icon_"+id);
@@ -256,7 +261,6 @@ var misc = {
 			});
 		}
 	}
-	
 }
 
 var context_menu = {
@@ -447,7 +451,7 @@ var keyboard = {
 	 * to keep the view in the selected element 
 	 *
 	 * */
-	menuLinesStartScroll: function() {		
+	/* menuLinesStartScroll: function() {		
 		// the panel with max height of 600px  
 		// is 20 lines in one line display
 		// and 12 lines with double line
@@ -477,9 +481,9 @@ var keyboard = {
 	
 	checkNewNode: function() {
 		return (new_node != null && new_node.tagName == "DIV");
-	},
+	}, */
 
-	upKey: function() {
+	/* upKey: function() {
 		new_node = old_node.previousSibling? old_node.previousSibling:old_node;
 		if (this.checkNewNode()) {			
 			misc.nodeToggle();				
@@ -505,16 +509,16 @@ var keyboard = {
 		new_node = document.getElementById(ids[Object.keys(ids).length-1]); 
 		misc.nodeToggle();
 		this.scrollMenuEnd();
-	},
+	}, */
 	
-	enterKey: async function() {
-		await browser.tabs.update(parseInt(new_node.id), {
+	enterKey: async function(id) {
+		await browser.tabs.update(parseInt(id), {
 			active: true,
 		});
 		window.close();
 	},
 
-	deleteKey: async function() {
+	/* deleteKey: async function() {
 		new_node = old_node.nextSibling? old_node.nextSibling:old_node.previousSibling;
 		let activeNode = active[old_node.id];
 		let id = old_node.id;
@@ -528,13 +532,13 @@ var keyboard = {
 
 		if(activeNode)
 			window.close();
-	},
+	}, */
 
 	/*
 	 * Key assigned to reload 
 	 *
 	 * */
-	insertKey: function() {
+	/* insertKey: function() {
 		let id = old_node.id;
 		var icon = document.getElementById("icon_"+id);
 
@@ -557,10 +561,10 @@ var keyboard = {
 			misc.setItemInfo(id, tabInfo.title, tabInfo);
 			misc.setInfoToTitle(id);
 		});
-	},
+	}, */
 
-	rightKey: function() {
-		let id = old_node.id;
+	rightKey: function(id) {
+		// let id = old_node.id;
 
 		misc.getTabInfo(id)
 		.then((tabInfo) => {
@@ -569,8 +573,8 @@ var keyboard = {
 		});
 	},
 
-	leftKey: function() {
-		let id = old_node.id;
+	leftKey: function(id) {
+		// let id = old_node.id;
 
 		misc.getTabInfo(id)
 		.then((tabInfo) => {
@@ -579,7 +583,7 @@ var keyboard = {
 		});
 	},
 
-	bookmarkKey: function() {
+	/* bookmarkKey: function() {
 		let id = old_node.id;
 
 		misc.getTabInfo(id)
@@ -597,7 +601,7 @@ var keyboard = {
 			window.close();
 		});
 
-	},
+	}, */
 
   selectTab: async function(key) {
     tabNumber = -1;
@@ -617,8 +621,8 @@ var keyboard = {
 		window.close();
 	},
 
-	muteKey: async function() {
-		let id = old_node.id;
+	muteKey: async function(id) {
+		//let id = old_node.id;
 		let {display} = 
 				await browser.storage.local.get(["display"]);
 
@@ -632,12 +636,12 @@ var keyboard = {
 		});
 	},
 
-    discardKey: function() {
+    /* discardKey: function() {
         let id = old_node.id;
         mouse.setDiscardClick(id);
-    },
+    }, */
 
-	keyboard_navigation: function(e) {
+	/* keyboard_navigation: function(e) {
 		keyboard.hideScrollBar();
 
 		let key = e.keyCode || e.which;
@@ -717,11 +721,174 @@ var keyboard = {
 			default: return; // exit this handler for other keys
 		}
 		e.preventDefault(); // prevent the default action (scroll / move caret)
-	},
+	}, */
 
 	hideScrollBar: function() {
 		document.body.style.overflowY = "hidden";
-	}
+	},
+
+    keyboardNavListener(e){
+        // const panelSelector = Logic.getPanelSelector(Logic._panels[Logic._currentPanel]);
+        const selectables = [...document.querySelectorAll(`#tabs div[tabindex='0'][data-enabled=yes]`)];
+        const element = document.activeElement;
+        // const backButton = document.querySelector(`${panelSelector} .keyboard-nav-back`);
+        const index = selectables.indexOf(element) || 0;
+        function next() {
+          const nextElement = selectables[index + 1];
+          if (nextElement) {
+            nextElement.focus();
+          }
+        }
+        function previous() {
+          const previousElement = selectables[index - 1];
+          if (previousElement) {
+            previousElement.focus();
+          }
+        }
+        function afterDelete() {
+            const nextElement = selectables[index + 1];
+            if (nextElement) {
+              nextElement.focus();
+            } else {
+                const previousElement = selectables[index - 1];
+                if (previousElement) {
+                    previousElement.focus();
+                }
+            } 
+        }
+        function first() {
+            const firstElement = selectables[0];
+            if (firstElement) {
+                firstElement.focus();
+            }
+        }
+        function last() {
+            const lastElement = selectables[selectables.length - 1];
+            if (lastElement) {
+                lastElement.focus();
+            }
+        }
+
+        switch (e.keyCode || e.which) {
+            case 40:
+                next();
+                break;
+            
+            case 38:
+                previous();
+                break;
+            
+            case 13:
+                if(element){
+                    keyboard.enterKey(parseInt(element.id))
+                }
+                break;
+
+            case 46: // delete
+                if (element) {
+                    mouse.setRemoveClick(parseInt(element.id));
+                    afterDelete();
+                }
+                break;
+
+            case 45: // insert (reload tab)
+                if (element) 
+                    mouse.setReloadClick(parseInt(element.id));
+                break;
+
+            case 111: // search
+                e.preventDefault();
+                document.querySelector("#search").focus();
+                break
+
+            case 55: // search
+                if (e.shiftKey) {
+                    e.preventDefault();
+                    document.querySelector("#search").focus();
+                }
+                break;
+
+            case 39: // right (show url)
+                if (element) 
+                    keyboard.rightKey(parseInt(element.id));
+                break;
+
+            case 37: // left (show title)
+                if (element) 
+                    keyboard.leftKey(parseInt(element.id));
+                break;
+            
+            case 36: // home (first tab)
+                first();
+                break;
+
+            case 35: // end
+                last();
+                break;
+            
+            case 112: // p
+            case 80: // P
+                // This should check if the character is P or not, because F1 == 112, which is interesting enough for some keyboard layout
+                if (e.key == "p" || e.key == "P")
+                    mouse.pinTabClick(parseInt(element.id));
+                break;
+            
+            case 98: // b
+            case 66: // B
+                if (e.key == "b" || e.key == "B")
+                    context_menu.setBookmarkClick(parseInt(element.id));
+                break;
+
+			case 109: // m
+			case 77: // M
+				keyboard.muteKey(parseInt(element.id));
+				break;
+
+			case 100: // d
+			case 68: // D
+				mouse.setDiscardClick(parseInt(element.id))	
+				break;
+
+            // number keys
+			case 49:
+			case 50:
+			case 51:
+			case 52:
+			case 53:
+			case 54:
+			case 55:
+			case 56:
+			case 57:
+				var tabNumber = String.fromCharCode(e.keyCode);
+				keyboard.selectTab(tabNumber);
+				break;
+
+            default:
+                break;
+        
+            }
+      },
+    
+      filterContainerList() {
+        const pattern = /^\s+|\s+$/g;
+        const list = Array.from(document.querySelectorAll(`#tabs [tabindex='0']`));
+        const search = document.querySelector("#search").value.replace(pattern, "").toLowerCase();
+    
+        for (const i in list) {
+          const text = list[i].querySelector(".text");
+    
+          if (text.innerText.replace(pattern, "").toLowerCase().includes(search) ||
+              !search) {
+            list[i].style.display = "block";
+            list[i].dataset.enabled = "yes";
+          } else {
+            list[i].style.display = "none";
+            list[i].dataset.enabled = "no";
+          }
+          
+          misc.updateIndexes();
+        }
+      }
 	
 }
 
@@ -841,7 +1008,7 @@ var mouse = {
 		window.close();
 	},
 
-	nodeLeave: function() {
+	/* nodeLeave: function() {
 		old_node.classList.remove("hover");
 		old_node = new_node;
 	},
@@ -854,7 +1021,7 @@ var mouse = {
 	mouse_navigation_leave: function(e) {
 		old_node = document.getElementById(e.target.id);
 		mouse.nodeLeave();
-	},
+	}, */
 
 	showScrollBar: function() {
 		document.body.style.overflowY = "scroll";
@@ -877,10 +1044,12 @@ var session = {
 
 	setFirstElement: function(div) {
 		if (this.first) {
-			old_node = div;
-			new_node = div;
-			this.first = false;
-			div.classList.add('hover');
+			// old_node = div;
+			// new_node = div;
+			// this.first = false;
+			// div.classList.add('hover');
+            div.focus();
+            this.first = false;
 		}
 	},
 
@@ -945,7 +1114,7 @@ var session = {
 			// load some options for keyboard scrolling
 			let factor = 15; //Hotfix for Firefox Addons change
 			heightLines = display["double_line"]? 12:20;
-			scrollBy = display["double_line"]? 3.3*factor:2*factor;
+			// scrollBy = display["double_line"]? 3.3*factor:2*factor;
 
 			if (scrollbar["mouse"])
 				mouse.showScrollBar();
@@ -962,7 +1131,7 @@ var session = {
 			
 			session.first = true;
 			for (let tab of tabs) {
-				if (display["onlypinned"] && !tab.pinned)
+				if (display["onlypinned"] && !tab.pinned) 
 					continue;
 
 				session.setIndexes(tab);
@@ -970,6 +1139,8 @@ var session = {
 				let div = document.createElement('div');
 				div.classList.add('button');
 				div.setAttribute('id', tab.id);
+                div.setAttribute('tabIndex', 0);
+				div.setAttribute('data-enabled', 'yes');
 				if (tab.active) {
 					div.classList.add('active');
 					session.activeTab = tab.cookieStoreId;					
@@ -1066,6 +1237,7 @@ var session = {
 					item.appendChild(span);					
 					item.appendChild(url);
 					item.classList.add('item');
+                    item.classList.add('text');
 					item.addEventListener('click', function() {
 						mouse.setItemClick(tab);
 					});
@@ -1077,6 +1249,7 @@ var session = {
 					span.innerText = tab.title;
 					span.setAttribute('title', `${tab.title}\r\n${tab.url}`);
 					span.classList.add('item');
+                    span.classList.add('text');
 					span.addEventListener('click', function() {
 						mouse.setItemClick(tab);
 					});
@@ -1180,8 +1353,8 @@ var session = {
 				if (display["unloaded"])
 					session.testLoadedTab(tab, div);
 				
-				div.addEventListener('mouseenter', mouse.mouse_navigation_enter);
-				div.addEventListener('mouseleave', mouse.mouse_navigation_leave);
+				// div.addEventListener('mouseenter', mouse.mouse_navigation_enter);
+				// div.addEventListener('mouseleave', mouse.mouse_navigation_leave);
 
 				tabsMenu.appendChild(div);
 
@@ -1204,7 +1377,9 @@ var session = {
 				}
 			}
 
-			document.addEventListener('keydown', keyboard.keyboard_navigation);
+			// document.addEventListener('keydown', keyboard.keyboard_navigation);
+            document.addEventListener('keydown', function(e) {keyboard.keyboardNavListener(e)});
+			document.addEventListener('input', keyboard.filterContainerList);
 			document.addEventListener('mouseover', mouse.showScrollBar);
 			document.addEventListener('click', function(e) {context_menu.clickEvent(e);});
 			document.addEventListener('contextmenu', function(e) {context_menu.right_click_menu(e);});
