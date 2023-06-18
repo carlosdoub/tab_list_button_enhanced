@@ -1,6 +1,6 @@
 //'use strict';
 
-var new_node, old_node;
+// var new_node, old_node;
 var indexes = {};
 var ids = {};
 var active = {};
@@ -198,11 +198,11 @@ var misc = {
 		return p;
 	},
 
-	nodeToggle: function() {
+	/* nodeToggle: function() {
 		old_node.classList.remove("hover");
 		new_node.classList.add("hover");
 		old_node = new_node;
-	},
+	}, */
 
 	setItemInfo: function(id, text, tabInfo) {
 		var icon = document.getElementById("icon_"+id);
@@ -261,7 +261,6 @@ var misc = {
 			});
 		}
 	}
-	
 }
 
 var context_menu = {
