@@ -260,7 +260,23 @@ var misc = {
 				}
 			});
 		}
-	}
+	},
+
+    checkBookmark: async function(tab) {
+        if(misc.isSupportedProtocol(tab.url)) {
+
+            return browser.bookmarks.search({url: tab.url})
+            .then((bookmarks) => {
+
+                if (bookmarks.length >= 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            });
+        }
+    }
 }
 
 var context_menu = {
@@ -1321,6 +1337,7 @@ var session = {
 
 				if (buttons["bookmark"]) {
 					let bookmark = document.createElement('img');
+                    console.log("CHECK", await misc.checkBookmark(tab));
 					let src = browser.runtime.getURL(`popup/img/${iconset[buttons.icontype].bookmark}`);
 					bookmark.setAttribute('src', src);
 					bookmark.setAttribute('width', '16');
