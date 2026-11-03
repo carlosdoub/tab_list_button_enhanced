@@ -12,41 +12,41 @@
     <table>
       <tr>
         <td><input type="checkbox" id="double-line" /></td>
-        <td>Double line with Title and URL</td>
+        <td><label for="double-line">Double line with Title and URL</label></td>
       </tr>
       <tr>
         <td><input type="checkbox" id="tabindex" /></td>
-        <td>Show tab index</td>
+        <td><label for="tabindex">Show tab index</label></td>
       </tr>
       <tr>
         <td><input type="checkbox" id="unloaded" /></td>
-        <td>Dim unloaded tabs </td>
+        <td><label for="unloaded">Dim unloaded tabs</label></td>
       </tr>
       <tr>
         <td><input type="checkbox" id="onlypinned" /></td>
-        <td>Show only pinned tabs </td>
+        <td><label for="onlypinned">Show only pinned tabs</label></td>
       </tr>
     </table>              
 	  <hr>
     <table>
       <tr>
         <td><input type="radio" name="borders" id="containercolorall" /></td>
-        <td>Use all items with containers colors</td>
+        <td><label for="containercolorall">Use all items with containers colors</label></td>
       </tr>
       <tr>
         <td><input type="radio" name="borders" id="active-border" /></td>
-        <td>Use only active item with color</td>
+        <td><label for="active-border">Use only active item with color</label></td>
       </tr>
     </table>              
   <fieldset id="active-border-options" class="fieldsetcolor">
     <legend>Active item border:</legend>
     <table>
       <tr>
-        <td>Default color:</td>
+        <td><label for="bordercolor">Default color:</label></td>
         <td><input type="color" id="bordercolor" /> </td>
       </tr>
       <tr>
-        <td>Use containers colors:</td>
+        <td><label for="containercolor">Use containers colors:</label></td>
         <td><input type="checkbox" id="containercolor" /> </td>
       </tr>
     </table> 
@@ -54,7 +54,7 @@
 	  <hr>
     <table>
       <tr>
-        <td >Tabs panel width:</td>
+        <td><label for="panel-width">Tabs panel width:</label></td>
         <td><input type="number" id="panel-width" value="250" min="200" max="600" style="width:60px"/> px
 			<img src="img/b_help.png" title="Default: 250px | Max: 600px | Min: 200px" /></td>
       </tr>
@@ -64,41 +64,41 @@
 <p />
   <fieldset>
 		<legend>  Show buttons:  </legend>
-        <input type="radio" name="iconset" id="mono-icons" value="monotone"> Monotone icons <br>
-        <input type="radio" name="iconset" id="color-icons" value="color"> Color icons 
+        <input type="radio" name="iconset" id="mono-icons" value="monotone"> <label for="mono-icons">Monotone icons</label> <br>
+        <input type="radio" name="iconset" id="color-icons" value="color"> <label for="color-icons">Color icons</label>
         <hr>
-		<input type="checkbox" id="viewurl" /> View URL <img src="img/information-line.png" /> <br />
-		<input type="checkbox" id="bookmark" /> Bookmark <img src="img/bookmark-line.png" /> <br />
-		<input type="checkbox" id="pin" /> Pin <img src="img/pushpin-line.png" /> <br />
-		<input type="checkbox" id="discard" /> Discard <img src="img/icons8-snowflake-16.png" />  <br />
-        <input type="checkbox" id="reload" /> Reload <img src="img/refresh-line.png" />  <br />
-		<input type="checkbox" id="remove" /> Close <img src="img/close-line.png" /> <br />
+		<input type="checkbox" id="viewurl" /> <label for="viewurl">View URL <img src="img/information-line.png" /></label> <br />
+		<input type="checkbox" id="bookmark" /> <label for="bookmark">Bookmark <img src="img/bookmark-line.png" /></label> <br />
+		<input type="checkbox" id="pin" /> <label for="pin">Pin <img src="img/pushpin-line.png" /></label> <br />
+		<input type="checkbox" id="discard" /> <label for="discard">Discard <img src="img/icons8-snowflake-16.png" /></label>  <br />
+        <input type="checkbox" id="reload" /> <label for="reload">Reload <img src="img/refresh-line.png" /></label>  <br />
+		<input type="checkbox" id="remove" /> <label for="remove">Close <img src="img/close-line.png" /></label> <br />
 	</fieldset>
   <p />
   <fieldset>
 		<legend>  Select icon:  </legend>
-      <input type="radio" name="icon" id="orange" /> <img src="img/16-tabs.png" /> &nbsp;
-      <input type="radio" name="icon" id="green" /> <img src="img/16-tabs-g.png" /> &nbsp;
-      <input type="radio" name="icon" id="purple" /> <img src="img/16-tabs-p.png" /> &nbsp;
-      <input type="radio" name="icon" id="grey" /> <img src="img/16-tabs-grey.png" /> <br /> 
-      <input type="radio" name="icon" id="orange_tabs" /> <img src="img/16-tabs(2).png" /> &nbsp;
-      <input type="radio" name="icon" id="green_tabs" /> <img src="img/16-tabs-g(2).png" /> &nbsp;
-      <input type="radio" name="icon" id="purple_tabs" /> <img src="img/16-tabs-p(2).png" /> &nbsp;
-      <input type="radio" name="icon" id="grey_tabs" /> <img src="img/16-tabs-grey(2).png" /> <br /> 
+      <input type="radio" name="icon" id="orange" /> <label for="orange"><img src="img/16-tabs.png" /></label> &nbsp;
+      <input type="radio" name="icon" id="green" /> <label for="green"><img src="img/16-tabs-g.png" /></label> &nbsp;
+      <input type="radio" name="icon" id="purple" /> <label for="purple"><img src="img/16-tabs-p.png" /></label> &nbsp;
+      <input type="radio" name="icon" id="grey" /> <label for="grey"><img src="img/16-tabs-grey.png" /></label> <br />
+      <input type="radio" name="icon" id="orange_tabs" /> <label for="orange_tabs"><img src="img/16-tabs(2).png" /></label> &nbsp;
+      <input type="radio" name="icon" id="green_tabs" /> <label for="green_tabs"><img src="img/16-tabs-g(2).png" /></label> &nbsp;
+      <input type="radio" name="icon" id="purple_tabs" /> <label for="purple_tabs"><img src="img/16-tabs-p(2).png" /></label> &nbsp;
+      <input type="radio" name="icon" id="grey_tabs" /> <label for="grey_tabs"><img src="img/16-tabs-grey(2).png" /></label> <br />
   </fieldset>
   <p />
   <fieldset>
     <legend>  Tab count (badge):  </legend>
-      <input type="checkbox" id="badge" /> Show tab count <br />
+      <input type="checkbox" id="badge" /> <label for="badge">Show tab count</label> <br />
       <fieldset class="fieldsetcolor">
         <legend>  Color:  </legend>
           <table>
             <tr>
-              <td>Background: </td>
+              <td><label for="bgcolor">Background:</label></td>
               <td><input type="color" id="bgcolor" /></td>
             </tr>
             <tr>
-              <td>Text: </td>
+              <td><label for="textcolor">Text:</label></td>
               <td><input type="color" id="textcolor" /> </td>
             </tr>
           </table>
@@ -107,16 +107,16 @@
   <p />
   <fieldset>
     <legend>  Default behavior:  </legend>
-    <input type="radio" name="scrollbar" id="mouse" /> Mouse (show scrollbar) <br />
-    <input type="radio" name="scrollbar" id="keyboard" /> Keyboard (hide scrollbar) <br />
+    <input type="radio" name="scrollbar" id="mouse" /> <label for="mouse">Mouse (show scrollbar)</label> <br />
+    <input type="radio" name="scrollbar" id="keyboard" /> <label for="keyboard">Keyboard (hide scrollbar)</label> <br />
 	<hr>
-    <input type="radio" name="startscroll" id="top" /> Start to scroll from top <br />
-    <input type="radio" name="startscroll" id="active" /> Start to scroll from active tab<br />
+    <input type="radio" name="startscroll" id="top" /> <label for="top">Start to scroll from top</label> <br />
+    <input type="radio" name="startscroll" id="active" /> <label for="active">Start to scroll from active tab</label><br />
 
   </fieldset>
   <p />
   <form>
-      <label>Keyboard shortcut: </label>
+      <label for="shortcut">Keyboard shortcut:</label>
       <input type="text" id="shortcut" >
       <button id="update">Update</button>
       <button id="reset">Restore</button>
@@ -170,4 +170,3 @@
 </body>
 
 </html>
-
