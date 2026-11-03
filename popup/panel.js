@@ -1066,16 +1066,9 @@ var session = {
 	},
 	
 	testLoadedTab: function(tab, div) {
-		div.classList.add("disabled");
-		const executing = browser.tabs.executeScript(tab.id,
-			{code: `;`}
-		);
-		executing.then(() => {               
-		});
-		executing.catch(() => {
-			if (tab.url != "about:blank")                 
-				div.classList.add("enabled");                    
-		});
+		const discarded = tab.discarded === true;
+		div.classList.toggle("disabled", discarded);
+		div.classList.toggle("enabled", !discarded);
 	},
 
 	setBorderColorByContainer: function(cookieStoreId, defaultColor) {
