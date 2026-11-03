@@ -905,7 +905,33 @@ var mouse = {
                 item.classList.add('disabled');
             });
             discarding.catch(function() {});
-        }
+        } else {
+			// When discarding the active tab
+			const selectables = [...document.querySelectorAll(`#tabs div.enabled`)];
+			const element = document.getElementById(id);
+			// const backButton = document.querySelector(`${panelSelector} .keyboard-nav-back`);
+			const index = selectables.indexOf(element) || 0;
+			const nextElement = selectables[index + 1];
+			
+			if (nextElement) {
+				browser.tabs.update(parseInt(nextElement.id), {
+					active: true,
+				});
+			} else {
+				const previousElement = selectables[index - 1];
+				if (previousElement) {
+					browser.tabs.update(parseInt(previousElement.id), {
+						active: true,
+					});
+				}
+			}
+			browser.tabs.discard(parseInt(id))
+			.then(function() {
+				window.close();	
+			}).catch(function() {
+				// console.log("Error discarding tab " + id)
+			});
+		}
     },
 
 	setMutedClick: async function(tab, double_line) {
@@ -1064,18 +1090,11 @@ var session = {
 			zero += "0";
 		return zero + index.toString();
 	},
-	
+
 	testLoadedTab: function(tab, div) {
-		div.classList.add("disabled");
-		const executing = browser.tabs.executeScript(tab.id,
-			{code: `;`}
-		);
-		executing.then(() => {               
-		});
-		executing.catch(() => {
-			if (tab.url != "about:blank")                 
-				div.classList.add("enabled");                    
-		});
+		const discarded = tab.discarded === true;
+		div.classList.toggle("disabled", discarded);
+		div.classList.toggle("enabled", !discarded);
 	},
 
 	setBorderColorByContainer: function(cookieStoreId, defaultColor) {
@@ -1144,7 +1163,7 @@ var session = {
 				if (tab.active) {
 					div.classList.add('active');
 					session.activeTab = tab.cookieStoreId;					
-					session.activeScrollTo = tab.index;					
+					session.activeScrollTo = tab.index;
 				}				
 
 				if (display["tabindex"]) {
